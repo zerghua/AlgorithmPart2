@@ -1,5 +1,16 @@
 /**
  * Created by Hua on 3/6/2017.
+
+ Corner cases.
+ All methods should throw a java.lang.NullPointerException if any argument is null.
+ All methods should throw a java.lang.IndexOutOfBoundsException if any argument vertex is
+ invalid—not between 0 and G.V() - 1.
+
+
+ Performance requirements.
+ All methods (and the constructor) should take time at most proportional to E + V in the worst case, where E and V are
+ the number of edges and vertices in the digraph, respectively. Your data type should use space proportional to E + V.
+
  */
 
 import edu.princeton.cs.algs4.Digraph;

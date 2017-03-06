@@ -64,6 +64,22 @@
  (with common ancestor 1). In the digraph at right (digraph2.txt), one ancestral path between 1 and 5 has length 4 (with
  common ancestor 5), but the shortest ancestral path has length 2 (with common ancestor 0).
 
+
+ Measuring the semantic relatedness of two nouns.
+ Semantic relatedness refers to the degree to which two concepts are related. Measuring semantic relatedness is a
+ challenging problem. For example, most of us agree that George Bush and John Kennedy (two U.S. presidents) are more
+ related than are George Bush and chimpanzee (two primates). However, not most of us agree that George Bush and
+ Eric Arthur Blair are related concepts. But if one is aware that George Bush and Eric Arthur Blair (aka George Orwell)
+ are both communicators, then it becomes clear that the two concepts might be related.
+
+
+ We define the semantic relatedness of two wordnet nouns A and B as follows:
+
+ distance(A, B) = distance is the minimum length of any ancestral path between any synset v of A and any synset w of B.
+
+ This is the notion of distance that you will use to implement the distance() and sap() methods in the WordNet data type.
+
+
  */
 public class WordNet {
     // constructor takes the name of the two input files
