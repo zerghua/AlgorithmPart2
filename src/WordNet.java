@@ -1,3 +1,5 @@
+import edu.princeton.cs.algs4.In;
+
 /**
  * Created by Hua on 3/6/2017.
 
@@ -84,7 +86,7 @@
 public class WordNet {
     // constructor takes the name of the two input files
     public WordNet(String synsets, String hypernyms){
-
+        In in = new In(synsets);
     }
 
     // returns all WordNet nouns
