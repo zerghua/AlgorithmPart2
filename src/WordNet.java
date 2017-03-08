@@ -1,4 +1,9 @@
+import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.NoSuchElementException;
 
 /**
  * Created by Hua on 3/6/2017.
@@ -84,19 +89,64 @@ import edu.princeton.cs.algs4.In;
 
  */
 public class WordNet {
+    HashMap<String, HashSet<Integer>> map;
+    private int numOfVertex = 0;
+    Digraph graph;
+
+
     // constructor takes the name of the two input files
     public WordNet(String synsets, String hypernyms){
-        In in = new In(synsets);
+        if (synsets == null || hypernyms == null) throw new java.lang.NullPointerException();
+        processSynsets(synsets);
+        processHypernyms(hypernyms);
+
     }
+
+    // filename of synsets
+    private void processSynsets(String filename){
+        In in = new In(filename);
+        map = new HashMap<>();
+        while(!in.isEmpty()){
+            String[] line = in.readLine().trim().split(",");
+            int id = Integer.parseInt(line[0].trim());
+            String[] words = line[1].trim().split("\\s+");  // split by spaces, also works for multiple spaces
+            for(String w: words){
+                if(!map.containsKey(w)) map.put(w, new HashSet<Integer>());
+                map.get(w).add(id);
+            }
+            numOfVertex++;
+        }
+    }
+
+    // filename of hypernyms
+    private void processHypernyms(String filename){
+        In in = new In(filename);
+        graph = new Digraph(numOfVertex);
+        try{
+            while(!in.isEmpty()){
+                String[] line = in.readLine().trim().split(",");
+                int v = Integer.parseInt(line[0]);
+                for(int i = 1; i < line.length; i++){
+                    graph.addEdge(v, Integer.parseInt(line[i]));
+
+                }
+            }
+        }
+        catch (NoSuchElementException e) {
+            throw new IllegalArgumentException("invalid input format in Digraph constructor", e);
+        }
+    }
+
 
     // returns all WordNet nouns
     public Iterable<String> nouns(){
-        return null;
+        return map.keySet();
     }
 
     // is the word a WordNet noun?
     public boolean isNoun(String word){
-        return false;
+        if (word == null) throw new java.lang.NullPointerException();
+        return map.containsKey(word);
     }
 
     // distance between nounA and nounB (defined below)
@@ -108,11 +158,27 @@ public class WordNet {
     // a synset (second field of synsets.txt) that is the common ancestor of nounA and nounB
     // in a shortest ancestral path (defined below)
     public String sap(String nounA, String nounB){
+        if (nounA == null || nounB == null) throw new java.lang.NullPointerException();
         return null;
     }
 
     // do unit testing of this class
     public static void main(String[] args){
+        WordNet wordnet = new WordNet(args[0], args[1]);
+
+
+        // unit test
+        boolean isFoundOneWordMapMultipleId = false;
+        for(String s: wordnet.map.keySet()){
+            //System.out.format("key=[%s] id=", s);
+            //System.out.println(wordnet.map.get(s));
+            if(wordnet.map.get(s).size() > 1) isFoundOneWordMapMultipleId = true;
+        }
+        if(isFoundOneWordMapMultipleId) System.out.println("Found one Word maps to multiple id");
+        System.out.println("number of vertex: " + wordnet.numOfVertex);
+        System.out.println("map size: " + wordnet.map.size());
+
+        System.out.println("graph vertex = " + wordnet.graph.V() + "  edges = " + wordnet.graph.E());
 
     }
 }
