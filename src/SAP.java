@@ -11,30 +11,50 @@
  All methods (and the constructor) should take time at most proportional to E + V in the worst case, where E and V are
  the number of edges and vertices in the digraph, respectively. Your data type should use space proportional to E + V.
 
+
+ Length = 4 ancestor = 1
+ Length = 3 ancestor = 5
+ Length = 4 ancestor = 0
+ Length = -1 ancestor = -1
+ Time                     = 0.023
+
  */
 
-import edu.princeton.cs.algs4.Digraph;
-import edu.princeton.cs.algs4.BreadthFirstDirectedPaths;
-import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.*;
+
+import java.util.Arrays;
+import java.util.LinkedList;
 
 public class SAP {
     private Digraph G ;
+
 
     // constructor takes a digraph (not necessarily a DAG)
     public SAP(Digraph G){
         this.G = new Digraph(G);
     }
 
+    private Iterable<Integer> toIterable(int v){
+        return new LinkedList<>(Arrays.asList(v));
+    }
+
     // return first is vertex, second is minLength
     private int[] getMinCommonAncestor(int v, int w){
-        if(v < 0 || v >= G.V() || w < 0 || w >= G.V()) throw new java.lang.IndexOutOfBoundsException("");
+        return getMinCommonAncestor(toIterable(v), toIterable(w));
+    }
+
+
+    // return first is vertex, second is minLength
+    private int[] getMinCommonAncestor(Iterable<Integer> v, Iterable<Integer> w){
+        checkBounds(v);
+        checkBounds(w);
         BreadthFirstDirectedPaths bfsV = new BreadthFirstDirectedPaths(G, v);
         BreadthFirstDirectedPaths bfsW = new BreadthFirstDirectedPaths(G, w);
         boolean[] isChecked = new boolean[G.V()]; //optimization, also important, or will be infinite loop.
-        Queue<Integer> q = new Queue<Integer>();
-        q.enqueue(v);
-        q.enqueue(w);
+        Queue<Integer> q = new Queue<>();
+        for(int vertex: v) q.enqueue(vertex);
+        for(int vertex: w) q.enqueue(vertex);
+
         int minDistance = Integer.MAX_VALUE;
         int vertex=-1;
         while(!q.isEmpty()){
@@ -54,42 +74,15 @@ public class SAP {
         return new int[]{vertex, minDistance};
     }
 
-
-    // return first is vertex, second is minLength
-    private int[] getMinCommonAncestor(Iterable<Integer> v, Iterable<Integer> w){
-        if(v == null || w == null) throw new java.lang.NullPointerException();
-
-        BreadthFirstDirectedPaths bfsV = new BreadthFirstDirectedPaths(G, v);
-        BreadthFirstDirectedPaths bfsW = new BreadthFirstDirectedPaths(G, w);
-        boolean[] isChecked = new boolean[G.V()]; //optimization, also important, or will be infinite loop.
-        Queue<Integer> q = new Queue<Integer>();
-        for(int vertex: v){
-            if(vertex < 0 || vertex >= G.V()) throw new java.lang.IndexOutOfBoundsException("");
-            q.enqueue(vertex);
+    private void checkBounds(Iterable<Integer> w){
+        if( w == null ) throw new java.lang.NullPointerException();
+        for(int v: w) {
+            checkBounds(v);
         }
+    }
 
-        for(int vertex: w){
-            if(vertex < 0 || vertex >= G.V()) throw new java.lang.IndexOutOfBoundsException("");
-            q.enqueue(vertex);
-        }
-
-        int minDistance = Integer.MAX_VALUE;
-        int vertex=-1;
-        while(!q.isEmpty()){
-            int cur = q.dequeue();
-            if(bfsV.hasPathTo(cur) && bfsW.hasPathTo(cur)){
-                if( bfsV.distTo(cur) + bfsW.distTo(cur) < minDistance){
-                    minDistance = bfsV.distTo(cur) + bfsW.distTo(cur);
-                    vertex = cur;
-                }
-            }
-            isChecked[cur] = true;
-
-            for(int adj : G.adj(cur)){
-                if(!isChecked[adj]) q.enqueue(adj);
-            }
-        }
-        return new int[]{vertex, minDistance};
+    private void checkBounds(int v){
+        if(v < 0 || v >= G.V()) throw new java.lang.IndexOutOfBoundsException();
     }
 
 
@@ -123,7 +116,9 @@ public class SAP {
     }
 
     // do unit testing of this class
+    // before optimization time: 0.022
     public static void main(String[] args){
+        Stopwatch time = new Stopwatch();
         In in = new In(args[0]);
         Digraph graph = new Digraph(in);
         SAP sap = new SAP(graph);
@@ -131,5 +126,6 @@ public class SAP {
         System.out.println("Length = " + sap.length(9,12)  + " ancestor = "+ sap.ancestor(9,12));
         System.out.println("Length = " + sap.length(7,2)  + " ancestor = "+ sap.ancestor(7,2));
         System.out.println("Length = " + sap.length(1,6)  + " ancestor = "+ sap.ancestor(1,6));
+        System.out.println(String.format("%-25s= ","Time") + time.elapsedTime());
     }
 }
