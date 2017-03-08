@@ -1,6 +1,7 @@
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -90,6 +91,7 @@ import java.util.NoSuchElementException;
  */
 public class WordNet {
     HashMap<String, HashSet<Integer>> map;
+    ArrayList<String> data;
     private int numOfVertex = 0;
     Digraph graph;
 
@@ -97,9 +99,9 @@ public class WordNet {
     // constructor takes the name of the two input files
     public WordNet(String synsets, String hypernyms){
         if (synsets == null || hypernyms == null) throw new java.lang.NullPointerException();
+        data = new ArrayList<>();
         processSynsets(synsets);
         processHypernyms(hypernyms);
-
     }
 
     // filename of synsets
@@ -110,6 +112,7 @@ public class WordNet {
             String[] line = in.readLine().trim().split(",");
             int id = Integer.parseInt(line[0].trim());
             String[] words = line[1].trim().split("\\s+");  // split by spaces, also works for multiple spaces
+            data.add(id, words[0]);
             for(String w: words){
                 if(!map.containsKey(w)) map.put(w, new HashSet<Integer>());
                 map.get(w).add(id);
@@ -151,7 +154,9 @@ public class WordNet {
 
     // distance between nounA and nounB (defined below)
     public int distance(String nounA, String nounB){
-        return 1;
+        if (nounA == null || nounB == null) throw new java.lang.NullPointerException();
+        SAP sap = new SAP(graph);
+        return sap.length(map.get(nounA), map.get(nounB));
 
     }
 
@@ -159,15 +164,15 @@ public class WordNet {
     // in a shortest ancestral path (defined below)
     public String sap(String nounA, String nounB){
         if (nounA == null || nounB == null) throw new java.lang.NullPointerException();
-        return null;
+        SAP sap = new SAP(graph);
+        int root_id = sap.ancestor(map.get(nounA), map.get(nounB));
+        return data.get(root_id);
     }
 
     // do unit testing of this class
     public static void main(String[] args){
         WordNet wordnet = new WordNet(args[0], args[1]);
 
-
-        // unit test
         boolean isFoundOneWordMapMultipleId = false;
         for(String s: wordnet.map.keySet()){
             //System.out.format("key=[%s] id=", s);
@@ -177,8 +182,36 @@ public class WordNet {
         if(isFoundOneWordMapMultipleId) System.out.println("Found one Word maps to multiple id");
         System.out.println("number of vertex: " + wordnet.numOfVertex);
         System.out.println("map size: " + wordnet.map.size());
-
         System.out.println("graph vertex = " + wordnet.graph.V() + "  edges = " + wordnet.graph.E());
+        System.out.println("data size = " + wordnet.data.size());
 
+
+        unitTestAncestor("worm", "bird", "animal", wordnet);
+        unitTestDistance("worm", "bird", 5, wordnet);
+        unitTestAncestor("individual", "edible_fruit", "physical_entity", wordnet);
+        unitTestDistance("individual", "edible_fruit", 7, wordnet);
+
+        unitTestDistance("white_marlin", "mileage", 23, wordnet);
+        unitTestDistance("Black_Plague", "black_marlin", 33, wordnet);
+        unitTestDistance("American_water_spaniel", "histology", 27, wordnet);
+        unitTestDistance("Brown_Swiss", "barrel_roll", 29, wordnet);
+    }
+
+    private static void unitTestAncestor(String word1, String word2, String correctAncestor, WordNet wordnet){
+        if(wordnet.sap(word1, word2).equals(correctAncestor)) {
+            System.out.println("Correct ancestor between "+ word1 + " and "+ word2);
+        }
+        else {
+            System.out.println("Wrong!! ancestor between "+ word1 + " and "+ word2);
+        }
+    }
+
+    private static void unitTestDistance(String word1, String word2, int correctDistance, WordNet wordnet){
+        if(wordnet.distance(word1, word2) == correctDistance) {
+            System.out.println("Correct distance between "+ word1 + " and "+ word2);
+        }
+        else {
+            System.out.println("Wrong!! distance between "+ word1 + " and "+ word2);
+        }
     }
 }
