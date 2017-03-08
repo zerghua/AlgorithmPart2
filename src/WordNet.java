@@ -171,14 +171,13 @@ public class WordNet {
     // do unit testing of this class
     // Time                     = 0.994
     // Time                     = 0.903  cache SAP rather than cache graph
+    // Time                     = 0.882  early return in SAP getMinCommonAncestor
     public static void main(String[] args) {
         Stopwatch time = new Stopwatch();
         WordNet wordnet = new WordNet(args[0], args[1]);
 
         boolean isFoundOneWordMapMultipleId = false;
         for (String s : wordnet.map.keySet()) {
-            //System.out.format("key=[%s] id=", s);
-            //System.out.println(wordnet.map.get(s));
             if (wordnet.map.get(s).size() > 1) isFoundOneWordMapMultipleId = true;
         }
         if (isFoundOneWordMapMultipleId) System.out.println("Found one Word maps to multiple id");
