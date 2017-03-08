@@ -90,10 +90,10 @@ import java.util.NoSuchElementException;
 
  */
 public class WordNet {
-    HashMap<String, HashSet<Integer>> map;
-    ArrayList<String> data;
+    private HashMap<String, HashSet<Integer>> map;
+    private ArrayList<String> data;
     private int numOfVertex = 0;
-    Digraph graph;
+    private Digraph graph;
 
 
     // constructor takes the name of the two input files

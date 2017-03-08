@@ -18,14 +18,29 @@ import edu.princeton.cs.algs4.StdOut;
 
  */
 public class Outcast {
+    private WordNet wordnet;
+
     // constructor takes a WordNet object
     public Outcast(WordNet wordnet){
-
+        this.wordnet = wordnet;
     }
 
     // given an array of WordNet nouns, return an outcast
     public String outcast(String[] nouns){
-        return null;
+        int maxDistance = 0;
+        String candidate = null;
+        String[] words = nouns.clone();
+        for(String w: words){
+            int dist = 0;
+            for(String v: words){
+                dist += wordnet.distance(w,v);
+            }
+            if(dist > maxDistance){
+                maxDistance = dist;
+                candidate = w;
+            }
+        }
+        return candidate;
     }
 
     // see test client below

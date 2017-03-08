@@ -19,7 +19,7 @@ import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Queue;
 
 public class SAP {
-    Digraph G ;
+    private Digraph G ;
 
     // constructor takes a digraph (not necessarily a DAG)
     public SAP(Digraph G){
