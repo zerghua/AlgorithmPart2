@@ -195,6 +195,8 @@ public class WordNet {
         unitTestDistance("Black_Plague", "black_marlin", 33, wordnet);
         unitTestDistance("American_water_spaniel", "histology", 27, wordnet);
         unitTestDistance("Brown_Swiss", "barrel_roll", 29, wordnet);
+
+        unitTestDistance("worm", "worm", 0, wordnet);
     }
 
     private static void unitTestAncestor(String word1, String word2, String correctAncestor, WordNet wordnet){
