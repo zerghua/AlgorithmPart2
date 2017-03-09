@@ -93,28 +93,28 @@ public class WordNet {
     private HashMap<Node, Integer> cacheDistance;
 
 
-
     private class Node {
         String nounA, nounB;
-        Node(String nounA, String nounB){
+
+        Node(String nounA, String nounB) {
             this.nounA = nounA;
             this.nounB = nounB;
         }
 
         @Override
-        public int hashCode(){
+        public int hashCode() {
             return this.nounA.hashCode() + this.nounB.hashCode();  //overflow?
         }
 
         @Override
-        public boolean equals(Object o){
-            if(o == null) return false;
-            if(! (o instanceof Node)) return false;
+        public boolean equals(Object o) {
+            if (o == null) return false;
+            if (!(o instanceof Node)) return false;
 
             Node other = (Node) o;
-            if((nounA.equals(other.nounA) && nounB.equals(other.nounB))
+            if ((nounA.equals(other.nounA) && nounB.equals(other.nounB))
                     || (nounA.equals(other.nounB) && nounB.equals(other.nounA))
-                    ){
+                    ) {
                 return true;
             }
             return false;
@@ -187,21 +187,10 @@ public class WordNet {
         if (nounA == null || nounB == null) throw new java.lang.NullPointerException();
 
         Node node = new Node(nounA, nounB);
-
-
-//        if(cacheDistance.containsKey(node)){
-//            System.out.println("cached distance between [" + nounA  + "] [" + nounB  +"] value=" + cacheDistance.get(node));
-//            return cacheDistance.get(node);
-//        }
-//        cacheDistance.put(node, sap.length(map.get(nounA), map.get(nounB)));
-//        return cacheDistance.get(node);
-
-
-        if(!cacheDistance.containsKey(node)){
+        if (!cacheDistance.containsKey(node)) {
             cacheDistance.put(node, sap.length(map.get(nounA), map.get(nounB)));
         }
         return cacheDistance.get(node);
-
     }
 
     // a synset (second field of synsets.txt) that is the common ancestor of nounA and nounB
@@ -210,7 +199,7 @@ public class WordNet {
         if (nounA == null || nounB == null) throw new java.lang.NullPointerException();
 
         Node node = new Node(nounA, nounB);
-        if(!cacheAncestor.containsKey(node)){
+        if (!cacheAncestor.containsKey(node)) {
             int root_id = sap.ancestor(map.get(nounA), map.get(nounB));
             cacheAncestor.put(node, data.get(root_id));
         }
