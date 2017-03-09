@@ -73,19 +73,29 @@ public class Outcast {
 //    wordnet\outcast8.txt: bed
 //    [potato] distance = 48
 //    wordnet\outcast11.txt: potato
+//    [acorn] distance = 322
+//    wordnet\outcast29.txt: acorn
+//            Time                     = 1.228
 
     // before optimization                     1.8s
     // after cache SAP rather than cache graph 0.939s
     // with cache:                             0.908s
+
+    // reading files takes = 1.063s
+    // calculation takes 0.235   before DeluxeBFS
+    // calculation takes 0.108   with  DeluxeBFS
+
     public static void main(String[] args) {
         Stopwatch time = new Stopwatch();
         WordNet wordnet = new WordNet(args[0], args[1]);
         Outcast outcast = new Outcast(wordnet);
+        System.out.println("reading files takes = " + time.elapsedTime());
+        Stopwatch time2 = new Stopwatch();
         for (int t = 2; t < args.length; t++) {
             In in = new In(args[t]);
             String[] nouns = in.readAllStrings();
             StdOut.println(args[t] + ": " + outcast.outcast(nouns));
         }
-        System.out.println(String.format("%-25s= ", "Time") + time.elapsedTime());
+        System.out.println(String.format("%-25s= ", "Time") + time2.elapsedTime());
     }
 }

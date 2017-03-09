@@ -26,15 +26,13 @@ import java.util.LinkedList;
 
 public class SAP {
     private Digraph G;
-
-    private class Node {
-        Iterable<Integer> v, w;
-
-    }
+    private DeluxeBFS bfsV, bfsW;
 
     // constructor takes a digraph (not necessarily a DAG)
     public SAP(Digraph G) {
         this.G = new Digraph(G);
+        bfsV = new DeluxeBFS(G);
+        bfsW = new DeluxeBFS(G);
     }
 
     private Iterable<Integer> toIterable(int v) {
@@ -42,6 +40,7 @@ public class SAP {
     }
 
 
+    /*
     // return first is vertex, second is minLength
     private int[] getMinCommonAncestor(Iterable<Integer> v, Iterable<Integer> w) {
         checkBounds(v);
@@ -69,7 +68,36 @@ public class SAP {
         }
         return new int[]{vertex, minDistance};
     }
+    */
 
+    ///*
+    private int[] getMinCommonAncestor(Iterable<Integer> v, Iterable<Integer> w) {
+        checkBounds(v);
+        checkBounds(w);
+        bfsV.runBFS(G, v);
+        bfsW.runBFS(G, w);
+        boolean[] isChecked = new boolean[G.V()]; //optimization, also important, or will be infinite loop.
+        Queue<Integer> q = new Queue<>();
+        for (int vertex : v) q.enqueue(vertex);
+        for (int vertex : w) q.enqueue(vertex);
+
+        int minDistance = Integer.MAX_VALUE;
+        int vertex = -1;
+        while (!q.isEmpty()) {
+            int cur = q.dequeue();
+            isChecked[cur] = true;
+            if (bfsV.hasPathTo(cur) && bfsW.hasPathTo(cur) && bfsV.distTo(cur) + bfsW.distTo(cur) < minDistance) {
+                minDistance = bfsV.distTo(cur) + bfsW.distTo(cur);
+                vertex = cur;
+            }
+
+            for (int adj : G.adj(cur)) {
+                if (!isChecked[adj]) q.enqueue(adj);
+            }
+        }
+        return new int[]{vertex, minDistance};
+    }
+    //*/
 
     private void checkBounds(Iterable<Integer> w) {
         if (w == null) throw new java.lang.NullPointerException();
