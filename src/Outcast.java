@@ -58,7 +58,7 @@ public class Outcast {
                 candidate = w;
             }
         }
-        System.out.println("[" + candidate + "] distance = " + maxDistance);
+        //System.out.println("[" + candidate + "] distance = " + maxDistance);
         return candidate;
     }
 
