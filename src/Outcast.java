@@ -50,7 +50,9 @@ public class Outcast {
             int dist = 0;
             for (String v : words) {
                 dist += wordnet.distance(w, v);
+                //System.out.println("distance between ["+ w + "] [" + v +"] is distance= " + dist);
             }
+            //System.out.println("["+ w + "] with distance= " + dist);
             if (dist > maxDistance) {
                 maxDistance = dist;
                 candidate = w;
@@ -64,8 +66,9 @@ public class Outcast {
     // wordnet\outcast8.txt: bed
     // wordnet\outcast11.txt: potato
 
-    // before optimization 1.8s
+    // before optimization                     1.8s
     // after cache SAP rather than cache graph 0.939s
+    // with cache:                             1.004s
     public static void main(String[] args) {
         Stopwatch time = new Stopwatch();
         WordNet wordnet = new WordNet(args[0], args[1]);

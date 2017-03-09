@@ -2,10 +2,7 @@ import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Stopwatch;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * Created by Hua on 3/6/2017.
@@ -92,7 +89,37 @@ public class WordNet {
     private HashMap<String, HashSet<Integer>> map;
     private ArrayList<String> data;
     private SAP sap;
+    private HashMap<Node, String> cacheAncestor;
+    private HashMap<Node, Integer> cacheDistance;
 
+
+
+    private class Node {
+        String nounA, nounB;
+        Node(String nounA, String nounB){
+            this.nounA = nounA;
+            this.nounB = nounB;
+        }
+
+        @Override
+        public int hashCode(){
+            return this.nounA.hashCode() + this.nounB.hashCode();  //overflow?
+        }
+
+        @Override
+        public boolean equals(Object o){
+            if(o == null) return false;
+            if(! (o instanceof Node)) return false;
+
+            Node other = (Node) o;
+            if((nounA.equals(other.nounA) && nounB.equals(other.nounB))
+                    || (nounA.equals(other.nounB) && nounB.equals(other.nounA))
+                    ){
+                return true;
+            }
+            return false;
+        }
+    }
 
     // constructor takes the name of the two input files
     public WordNet(String synsets, String hypernyms) {
@@ -101,6 +128,8 @@ public class WordNet {
         int vertex = processSynsets(synsets);
         Digraph graph = processHypernyms(hypernyms, vertex);
         sap = new SAP(graph);
+        cacheAncestor = new HashMap<>();
+        cacheDistance = new HashMap<>();
     }
 
     // filename of synsets
@@ -156,7 +185,22 @@ public class WordNet {
     // distance between nounA and nounB (defined below)
     public int distance(String nounA, String nounB) {
         if (nounA == null || nounB == null) throw new java.lang.NullPointerException();
-        return sap.length(map.get(nounA), map.get(nounB));
+
+        Node node = new Node(nounA, nounB);
+
+
+//        if(cacheDistance.containsKey(node)){
+//            System.out.println("cached distance between [" + nounA  + "] [" + nounB  +"] value=" + cacheDistance.get(node));
+//            return cacheDistance.get(node);
+//        }
+//        cacheDistance.put(node, sap.length(map.get(nounA), map.get(nounB)));
+//        return cacheDistance.get(node);
+
+
+        if(!cacheDistance.containsKey(node)){
+            cacheDistance.put(node, sap.length(map.get(nounA), map.get(nounB)));
+        }
+        return cacheDistance.get(node);
 
     }
 
@@ -164,8 +208,13 @@ public class WordNet {
     // in a shortest ancestral path (defined below)
     public String sap(String nounA, String nounB) {
         if (nounA == null || nounB == null) throw new java.lang.NullPointerException();
-        int root_id = sap.ancestor(map.get(nounA), map.get(nounB));
-        return data.get(root_id);
+
+        Node node = new Node(nounA, nounB);
+        if(!cacheAncestor.containsKey(node)){
+            int root_id = sap.ancestor(map.get(nounA), map.get(nounB));
+            cacheAncestor.put(node, data.get(root_id));
+        }
+        return cacheAncestor.get(node);
     }
 
     // do unit testing of this class

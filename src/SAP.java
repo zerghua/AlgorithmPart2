@@ -61,7 +61,6 @@ public class SAP {
             if (bfsV.hasPathTo(cur) && bfsW.hasPathTo(cur) && bfsV.distTo(cur) + bfsW.distTo(cur) < minDistance) {
                 minDistance = bfsV.distTo(cur) + bfsW.distTo(cur);
                 vertex = cur;
-                return new int[]{vertex, minDistance};  //maybe buggy.
             }
 
             for (int adj : G.adj(cur)) {
@@ -71,54 +70,6 @@ public class SAP {
         return new int[]{vertex, minDistance};
     }
 
-
-    /*
-    // alternating queue, not significant runtime improvement
-    private int[] getMinCommonAncestor(Iterable<Integer> v, Iterable<Integer> w) {
-        checkBounds(v);
-        checkBounds(w);
-        BreadthFirstDirectedPaths bfsV = new BreadthFirstDirectedPaths(G, v);
-        BreadthFirstDirectedPaths bfsW = new BreadthFirstDirectedPaths(G, w);
-        boolean[] isChecked = new boolean[G.V()]; //optimization, also important, or will be infinite loop.
-        Queue<Integer> qv = new Queue<>();
-        Queue<Integer> qw = new Queue<>();
-        for (int vertex : v) qv.enqueue(vertex);
-        for (int vertex : w) qw.enqueue(vertex);
-
-        int minDistance = Integer.MAX_VALUE;
-        int vertex = -1;
-        boolean isFirst = false;
-        while(!qv.isEmpty() && !qw.isEmpty()){
-            if(isFirst){
-                isFirst = false;
-                int cur = qv.dequeue();
-                isChecked[cur] = true;
-                if (bfsV.hasPathTo(cur) && bfsW.hasPathTo(cur) && bfsV.distTo(cur) + bfsW.distTo(cur) < minDistance){
-                    minDistance = bfsV.distTo(cur) + bfsW.distTo(cur);
-                    vertex = cur;
-                    return new int[]{vertex, minDistance};
-                }
-                for (int adj : G.adj(cur)) {
-                    if (!isChecked[adj]) qv.enqueue(adj);
-                }
-
-            }else{
-                isFirst = true;
-                int cur = qw.dequeue();
-                isChecked[cur] = true;
-                if (bfsV.hasPathTo(cur) && bfsW.hasPathTo(cur) && bfsV.distTo(cur) + bfsW.distTo(cur) < minDistance){
-                    minDistance = bfsV.distTo(cur) + bfsW.distTo(cur);
-                    vertex = cur;
-                    return new int[]{vertex, minDistance};
-                }
-                for (int adj : G.adj(cur)) {
-                    if (!isChecked[adj]) qw.enqueue(adj);
-                }
-            }
-        }
-        return new int[]{vertex, minDistance};
-    }
-    */
 
     private void checkBounds(Iterable<Integer> w) {
         if (w == null) throw new java.lang.NullPointerException();
