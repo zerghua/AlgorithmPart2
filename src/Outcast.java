@@ -58,6 +58,7 @@ public class Outcast {
                 candidate = w;
             }
         }
+        System.out.println("[" + candidate + "] distance = " + maxDistance);
         return candidate;
     }
 
@@ -66,9 +67,16 @@ public class Outcast {
     // wordnet\outcast8.txt: bed
     // wordnet\outcast11.txt: potato
 
+//    [table] distance = 39
+//    wordnet\outcast5.txt: table
+//    [bed] distance = 60
+//    wordnet\outcast8.txt: bed
+//    [potato] distance = 48
+//    wordnet\outcast11.txt: potato
+
     // before optimization                     1.8s
     // after cache SAP rather than cache graph 0.939s
-    // with cache:                             1.004s
+    // with cache:                             0.908s
     public static void main(String[] args) {
         Stopwatch time = new Stopwatch();
         WordNet wordnet = new WordNet(args[0], args[1]);
