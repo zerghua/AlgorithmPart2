@@ -1,0 +1,17 @@
+Some graph-processing problems
+
+1. Path. Is there a path between s and t?
+2. Shortest path. What is the shortest path between s and t?
+
+3. Cycle. Is there a cycle in the graph?
+4. Euler tour. Is there a cycle that uses each edge exactly once?
+5. Hamilton tour. Is there a cycle that used each vertex exactly once?
+
+6. Connectivity. Is there a way to connect all of the vertices?
+7. MST(Minimum Spanning Tree). What is the best way to connect all of the vertices?
+8. Bioconnectivity. Is there a vertex whose removal disconnects the graph?
+
+
+9. Planarity. Can you draw the graph in the plane with no crossing edges?
+10.Graph isomorphism. Do two adjacency list represent the same graph?
+
