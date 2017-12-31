@@ -15,3 +15,100 @@ Some graph-processing problems
 9. Planarity. Can you draw the graph in the plane with no crossing edges?
 10.Graph isomorphism. Do two adjacency list represent the same graph?
 
+
+
+Graph representation
+Vertex representation
+1. This lecture: use integer between 0 and V-1
+2. Application: convert between names and integers with symbol table.
+
+Anomalies:
+1. self-loop
+2. paralleled edges
+
+
+Graph API
+public class Graph{
+    Graph(int V)    // create an empty graph with V vertices
+    Graph(In in)    // create a graph from input stream
+    void addEdge(int v, int w)  // add an edge v-w
+    Iterable<Integer> adj(int v)    // vertices adjacent to v
+    int V() // number of vertices
+    int E() // number of edges
+    String toString()   // string representation
+}
+
+// client
+In in = new Int(args[0]);
+Graph G = new Graph(in);
+for(int v = 0; v < G.V(); v++){
+    for(int w : G.adj(v)) StdOut.println(v + "-" + w);
+}
+
+
+Typical graph-processing code
+// compute the degree of v
+public static int degree(Graph G, int v){
+    int degree = 0;
+    for(int w : G.adj(v)) degree++;
+    return degree;
+}
+
+// compute maximum degree
+public static int maxDegree(Graph G){
+    int max = 0;
+    for(int v=0; v < G.V(); v++){
+        max = Math.max(max, degree(G, v));
+    }
+    return max;
+}
+
+// compute average degree
+public static double averageDegree(Graph G){
+    return 2.0 * G.E() / G.V();
+}
+
+// count of self-loops
+public static int numberOfSelfLoops(Graph G){
+    int count = 0;
+    for(int v=0; v<G.V(); v++){
+        for(int w : G.adj(v)) if(v == w) count++;
+    }
+    return count / 2;    // each edge counted twice
+}
+
+
+
+1. set-of-edges graph representation
+Maintain a list of the edges, linked list or array
+
+2. Adjacency-matrix graph representation
+Maintain a two dimensional V by V boolean array:
+
+3. Adjacency-list graph representation
+Maintain vertex-indexed array of lists
+
+
+Adjacency-list graph representation: Java implementation
+public class Graph{
+    private final int V;
+    private Bag<Integer>[] adj; // arraylist of arraylist
+
+    public Graph(int V){
+        this.V = V;
+        adj = (Bag<Integer>[]) new Bag[V];
+        for(int v =0; v < V; v++) adj[v] = new Bag<Integer>();
+    }
+
+    public void addEdge(int v, int w){
+        adj[v].add(w);
+        adj[w].add(v);
+    }
+
+    public Iterable<Integer> adj(int v){
+        return adj[v];
+    }
+}
+
+
+
