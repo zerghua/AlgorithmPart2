@@ -111,4 +111,90 @@ public class Graph{
 }
 
 
+Depth-First Search
+Maze exploration
+Vertex = intersection
+Edge = passage
+
+Tremaux Maze exploration
+Algorithm
+1. Unroll a ball of string behind you.
+2. Mark each visited intersection and each visited passage.
+3. Retrace steps when no unvisited options.
+
+
+Goal. Systematically search through a graph.
+Idea. Mimic maze exploration.
+
+DFS(to visit a vertex v)
+Mark v as visited.
+Recursively visit all unmarked vertices w adjacent to v.
+
+
+Typical applications.
+1. Find all vertices connected to a given source vertex.
+2. Find a path between two vertices.
+
+
+Design pattern for graph processing
+Design pattern. Decouple graph data type from graph processing.
+1. Create a graph object.
+2. Pass the Graph to a graph-processing routine.
+3. Query the graph-processing routine for information.
+
+Paths paths = new Paths(G, s); // find path in G from source s.
+for(int v = 0; v < G.V(); v++){
+    if(path.hasPathTo(v)) StdOut.println(v);
+}
+
+
+
+public class DepthFirstPaths{
+    private boolean[] marked;
+    private int[] edgeTo;
+    private int s;
+
+    public DepthFirstPaths(Graph G, int s){
+        ...
+        dfs(G, s);
+    }
+
+    private void dfs(Graph G, int v){
+        marked[v] = true;
+        for(int w : G.adj(v)){
+            if(!marked[w]){
+                dfs(G, w);
+                edgeTo[w] = v;
+            }
+        }
+    }
+}
+
+DFS properties.
+Proposition.
+1. DFS marks all vertices connected to s in time proportional
+to the sum of their degrees.
+
+2. Each vertex connected to s is visited once.
+
+3. After DFS, can find vertices connected to s in constant
+time and can find a path to s(if one exists) in time
+proportional to its length.(backtrack to parent)
+
+public boolean hasPathTo(int v){ return marked[v];}
+
+public Iterable<Integer> pathTo(int v){
+    if(!hasPathTo(v)) return null;
+    Stack<Integer> path = new Stack<Integer>();
+    for(int x = v; x != s; x = edgeTo[x]) path.push(x);
+    path.push(s);
+    return path;
+}
+
+DFS application(flood fill)
+
+
+
+
+
 
