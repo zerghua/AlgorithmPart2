@@ -195,6 +195,57 @@ DFS application(flood fill)
 
 
 
+Breadth-First Search
+Repeat until queue is empty:
+1. remove vertex v from queue.
+2. Add to queue all unmarked vertices adjacent to v and mark them.
+
+
+Shortest path. Find path from s to t that uses fewest number of edges.
+
+BFS(from source vertex s)
+put s onto a FIFO queue, and mark s as visited
+Repeat until queue is empty:
+1. remove the least recently add vertex v.
+2. add each of v's unvisited neighbours to the queue and mark them as visited.
+
+
+
+BFS properties.
+BFS computes shortest paths(fewest number of edges) from s to
+all other vertices in a graph in time proportional to E + V.
+
+
+
+public class BreadthFirstPaths{
+    private boolean[] marked;
+    private int[] edgeTo;
+
+    ...
+
+    private void bfs(Graph G, int s){
+        Queue<Integer> q = new Queue<Integer>();
+        q.enqueue(s);
+        marked[s] = true;
+        while(!q.isEmpty()){
+            int v = q.dequeue();
+            for(int w : G.adj(v)){
+                if(!marked[w]){
+                    q.enqueue(w);
+                    marked[w] true;
+                    edgeTo[w] = v;
+                }
+            }
+        }
+    }
+}
+
+
+BFS application
+routing: Fewest number of hops in a communication network.
+Kevin Bacon numbers.
+Erdos numbers.
+
 
 
 
