@@ -16,7 +16,7 @@ Some graph-processing problems
 10.Graph isomorphism. Do two adjacency list represent the same graph?
 
 
-
+----------------------------------------------------------
 Graph representation
 Vertex representation
 1. This lecture: use integer between 0 and V-1
@@ -110,7 +110,7 @@ public class Graph{
     }
 }
 
-
+----------------------------------------------------------
 Depth-First Search
 Maze exploration
 Vertex = intersection
@@ -194,7 +194,7 @@ public Iterable<Integer> pathTo(int v){
 DFS application(flood fill)
 
 
-
+----------------------------------------------------------
 Breadth-First Search
 Repeat until queue is empty:
 1. remove vertex v from queue.
@@ -247,7 +247,7 @@ Kevin Bacon numbers.
 Erdos numbers.
 
 
-
+----------------------------------------------------------
 Connected Components(number of islands)
 Def. Vertices v and w are connected if there is a path between them.
 
@@ -280,8 +280,30 @@ Particle detection
 Particle tracking
 
 
+----------------------------------------------------------
+Graph-processing challenge Problems
+1. Is a graph bipartite?
+How difficult? Diligent algorithm student could do it.
+simple DFS-based solution
 
+2. Find a cycle?
+How difficult? Any programmer could do it.
+DFS.
 
+3. Euler tour(Is there a cycle that uses each edge exactly once?)
+How difficult? Diligent algorithm student could do it.(harder than bipartite)
+
+4. Find a cycle that visits every vertex exactly once.
+(traveling salesman problem)
+How difficult? Intractable. Hamiltonian cycle(classical NP complete problem)
+
+5. Are two graphs identical except for vertex names?
+(same structure but can rename)
+How difficult? No one knows.
+
+6. Lay out a graph in the plane without crossing edges?
+How difficult? Hire an expert.
+Linear time DFS-based planarity algorithm. complex.
 
 
 
