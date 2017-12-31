@@ -248,4 +248,40 @@ Erdos numbers.
 
 
 
+Connected Components(number of islands)
+Def. Vertices v and w are connected if there is a path between them.
+
+Goal. Preprocess graph to answer queries of the form
+"is v connected to w?" in constant time.
+
+public class CC{
+    CC(Graph G)
+    boolean connected(int v, int w)
+    int count()
+    int id(int v)
+}
+
+Union-Find? Not quite.
+DFS. Yes
+
+Def. A connected component is a maximal set of connected vertices.
+
+Goal. Partition vertices into connected components.
+Initialize all vertices v as unmarked.
+For each unmarked vertex v, run DFS to identify all vertices
+discovered as part of the same components.
+
+Connected components applications:
+Study of spread of STDs
+Particle detection
+    Vertex: pixel.
+    Edge: between two adjacent pixels with grayscale value >=70
+    Blob: connected components of 20-30 pixels.
+Particle tracking
+
+
+
+
+
+
 
