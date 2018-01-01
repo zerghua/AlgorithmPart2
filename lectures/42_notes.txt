@@ -103,6 +103,66 @@ web crawler(why not DFS? self-loops of traps?)
 
 
 ----------------------------------------------------------
+Topological Sort
+Precedence scheduling
+Goal. Given a set of tasks to be completed with precedence
+constrains, in which order should we schedule the tasks?
+
+Digraph model
+Vertex=task
+Edge=precedence constraint
+
+
+DAG. Directed acyclic graph. (No cycle)
+Topological sort. Redraw DAG so all edges point upwards.
+
+Solution. DFS.
+- Run DFS
+- Return vertices in reverse postorder.
+
+public class DepthFirstOrder{
+    private boolean[] marked;
+    private Stack<Integer> reversePost;
+
+    public DepthFirstOrder(Graph G){
+        reversePost = new Stack<Integer>();
+        for(int v = 0; v < G.V(); v++){
+            if(!marked[v]) dfs(G, v);
+        }
+    }
+
+    private void dfs(Graph G, int v){
+        marked[v] = true;
+        for(int w : G.adj(v)){
+            if(!marked[w]){
+                dfs(G, w);
+            }
+        }
+        reversePost.push(v);
+    }
+
+    public Iterable<Integer> reversePost(){
+        return reversePost;
+    }
+}
+
+
+Proposition.
+1. Reverse DFS postorder of a DAG is a topological order.
+2. A digraph has a topological order iff no directed cycle.
+
+
+Directed cycle detection applications
+1. Java compiler does cyclic detection
+2. Excel does cyclic detection
+
+
+
+
+
+
+
+
 
 
 
