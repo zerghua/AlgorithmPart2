@@ -158,14 +158,59 @@ Directed cycle detection applications
 
 
 
-
-
-
-
-
-
-
-
-
-
 ----------------------------------------------------------
+Strong Components
+Strongly-connected components
+Def. Vertices v and w are strongly connected if there is a
+directed path from v to w and a directed path from w to v.
+
+Key property.
+Strong connectivity is an equivalence relation.
+1. v is strongly connect to v.
+2. if v is strongly connected w, then w is to v.
+3. if v is strongly connected w, and w to x, then v is to x.
+
+Def. A strong component
+is a maximal subset of strongly-connected vertices.
+
+connected components vs strongly-connected components
+
+connected components:
+v and w are connected if there is a path between them.
+
+Strongly connected:
+v and w are connected if there is a path from v to w and w to v.
+
+share the same solution.
+
+
+Strong components applications.
+1. ecological food webs.
+2. software modules(dependency).
+
+
+Strong components algorithms
+1980s: Kosaraju-Sharir
+easy two-pass linear-time algorithm
+
+Reverse graph. Strong components in G are the same in G(R).
+
+Kernel DAG. Contract each strong component into a single vertex.
+
+
+Idea.
+1. Compute topological order(reverse postorder) in kernel DAG.
+2. Run DFS, considering vertices in reverse topological order.
+
+similar to connect components.
+
+
+
+
+
+
+
+
+
+
+
