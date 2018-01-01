@@ -1,0 +1,111 @@
+Directed Graph
+
+----------------------------------------------------------
+Introduction
+
+Digraph. Set of vertices connected pairwise by directed edges.
+
+indegree: edges coming in
+outdegree: edges going out
+
+examples
+
+Bank loan
+Circuit board
+WordNet
+
+
+Digraph problems
+1. Is there a directed path from s to t?
+2. Shortest path from s to t?
+3. Topological sort. Can you draw a digraph so that all edges point upwards?
+4. Strong connectivity. Is there a directed path between all pairs of vertices?
+5. Transitive closure. For which vertices v and w is there a path from v to w?
+6. PageRank. What is the importance of a web page?
+
+
+
+----------------------------------------------------------
+Digraph API
+
+
+public class Digraph{
+    Digraph(int v)
+    Digraph(In in)
+    void addEdge(int v, int w)
+    Iterable<Integer> adj(int v)
+    int V()
+    int E()
+    Digraph reverse()
+    String toString()
+}
+
+
+Adjacency-lists digraph representation
+Maintain vertex-indexed array of lists.
+
+public class DiGraph{
+    private final int V;
+    private Bag<Integer>[] adj; // arraylist of arraylist
+
+    public DiGraph(int V){
+        this.V = V;
+        adj = (Bag<Integer>[]) new Bag[V];
+        for(int v =0; v < V; v++) adj[v] = new Bag<Integer>();
+    }
+
+    public void addEdge(int v, int w){
+        adj[v].add(w);   // only one direction for digraph
+    }
+
+    public Iterable<Integer> adj(int v){
+        return adj[v];
+    }
+}
+
+
+----------------------------------------------------------
+Digraph Search
+Reachability
+Find all vertices reachable from s along a directed path.
+
+Solution
+the same method as undirected graphs. DFS.
+
+To visit a vertex v:
+1. Mark vertex v as visited
+2. Recursively visit all unmarked vertices pointing from v.
+
+
+Reachability application
+1. Program control-flow analysis
+2. mark-sweep garbage collector(Java)
+Vertex=object
+Edge=reference
+
+mark-sweep algorithm
+-Mark: mark all reachable objects
+-Sweep: if object is unmarked, it is garbage(so add to free list)
+
+
+BFS
+the same as undirected graphs.
+BFS computes shortest path.
+
+Multiple-source shortest paths
+Given a digraph and a set of source vertices, find shortest
+path from any vertex in the set to each other vertex.
+
+BFS in digraph applications
+web crawler(why not DFS? self-loops of traps?)
+
+
+
+
+----------------------------------------------------------
+
+
+
+
+
+----------------------------------------------------------
