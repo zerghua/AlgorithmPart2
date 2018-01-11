@@ -1,10 +1,6 @@
 /**
  * Created by Hua on 3/6/2017.
  * <p/>
- * Corner cases.
- * All methods should throw a java.lang.NullPointerException if any argument is null.
- * All methods should throw a java.lang.IndexOutOfBoundsException if any argument vertex is
- * invalid—not between 0 and G.V() - 1.
  * <p/>
  * <p/>
  * Performance requirements.
@@ -19,8 +15,11 @@
  * Time                     = 0.023
  */
 
-import edu.princeton.cs.algs4.*;
-
+//import edu.princeton.cs.algs4.*;
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.Digraph;
+import edu.princeton.cs.algs4.Queue;
+import edu.princeton.cs.algs4.Stopwatch;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -100,9 +99,9 @@ public class SAP {
     //*/
 
     private void checkBounds(Iterable<Integer> w) {
-        if (w == null) throw new java.lang.NullPointerException();
+        if (w == null) throw new java.lang.IllegalArgumentException();
         for (int v : w) {
-            if (v < 0 || v >= G.V()) throw new java.lang.IndexOutOfBoundsException();
+            if (v < 0 || v >= G.V()) throw new java.lang.IllegalArgumentException();
         }
     }
 
