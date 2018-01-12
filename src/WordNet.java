@@ -1,18 +1,15 @@
-import edu.princeton.cs.algs4.Digraph;
+import edu.princeton.cs.algs4.DirectedCycle;
 import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.Stopwatch;
-
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.HashMap;
-import java.util.NoSuchElementException;
+import java.util.HashSet;
+import java.util.ArrayList;
 
-
-//import java.util.*;
 
 /**
  * Created by Hua on 3/6/2017.
+ * updated by Hua on 1/11/2018
 */
 
 public class WordNet {
@@ -57,17 +54,11 @@ public class WordNet {
         data = new ArrayList<>();
         int vertex = processSynsets(synsets);
         Digraph graph = processHypernyms(hypernyms, vertex);
-        isDag(graph);
         sap = new SAP(graph);
         cacheAncestor = new HashMap<>();
         cacheDistance = new HashMap<>();
     }
 
-    // throw IllegalArgumentException when detects a cycle and over one root
-    // TODO
-    private void isDag(Digraph graph){
-
-    }
 
     // filename of synsets
     private int processSynsets(String filename) {
@@ -93,21 +84,66 @@ public class WordNet {
     private Digraph processHypernyms(String filename, int numOfVertex) {
         In in = new In(filename);
         Digraph graph = new Digraph(numOfVertex);
-        try {
-            while (!in.isEmpty()) {
-                String[] line = in.readLine().trim().split(",");
-                int v = Integer.parseInt(line[0]);
-                for (int i = 1; i < line.length; i++) {
-                    graph.addEdge(v, Integer.parseInt(line[i]));
 
-                }
+        while (!in.isEmpty()) {
+            String[] line = in.readLine().trim().split(",");
+            int v = Integer.parseInt(line[0]);
+            for (int i = 1; i < line.length; i++) {
+                graph.addEdge(v, Integer.parseInt(line[i]));
             }
-        } catch (Exception e) {
-            throw new IllegalArgumentException("invalid input format in Digraph constructor", e);
         }
+
+        // throw IllegalArgumentException when detects a cycle and over one root
+        if(!isRootedDag(graph)) throw new IllegalArgumentException("");
+
         return graph;
     }
 
+    private boolean isRootedDag(Digraph graph){
+        /*
+        int[] isMarked = new int[graph.V()];  // 0 not visited, 1 visited, 2 currently visit
+        HashSet<Integer> roots = new HashSet();
+        for(int v=0; v<graph.V(); v++){
+            if(isMarked[v] == 0) dfs(v, graph, isMarked, roots);
+        }
+        */
+
+        if(new DirectedCycle(graph).hasCycle()) {
+            System.out.println("find cycle");
+            return false;
+        }
+
+        // count number of roots
+        int count = 0;
+        for(int v=0; v<graph.V(); v++){
+            if(graph.outdegree(v) == 0) count++;
+            if(count > 1) {
+                System.out.println("Find more than one root");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Topological sort to detect cycle and rule out multiple roots
+    // 0 not visited, 1 visited, 2 currently visit
+    private void dfs(int v, Digraph graph, int[] isMarked, HashSet<Integer> roots ){
+        if(isMarked[v] == 1) return;
+        if(isMarked[v] == 2) {
+            System.out.println(v);
+            throw new IllegalArgumentException("find cycle");
+        }
+
+        if(graph.outdegree(v) == 0) roots.add(v);
+        if(roots.size() > 1) throw new IllegalArgumentException("more than one root");
+
+        isMarked[v] = 1;
+        for(int adj : graph.adj(v)){
+            isMarked[adj] = 2;
+            dfs(adj, graph, isMarked, roots);
+            isMarked[adj] = 1;
+        }
+    }
 
     // returns all WordNet nouns
     public Iterable<String> nouns() {
@@ -149,6 +185,7 @@ public class WordNet {
     // Time                     = 0.903  cache SAP rather than cache graph
     // Time                     = 0.882  early return in SAP getMinCommonAncestor
     public static void main(String[] args) {
+        /*
         In in = new In(args[0]);
         Digraph G = new Digraph(in);
         SAP sap = new SAP(G);
@@ -159,9 +196,9 @@ public class WordNet {
             int ancestor = sap.ancestor(v, w);
             System.out.printf("length = %d, ancestor = %d\n", length, ancestor);
         }
+        */
 
-
-        /*
+        ///*
         Stopwatch time = new Stopwatch();
         WordNet wordnet = new WordNet(args[0], args[1]);
 
@@ -188,7 +225,7 @@ public class WordNet {
         unitTestDistance("worm", "worm", 0, wordnet);
         System.out.println(String.format("%-25s= ", "Time") + time.elapsedTime());
 
-        */
+        //*/
     }
 
     private static void unitTestAncestor(String word1, String word2, String correctAncestor, WordNet wordnet) {

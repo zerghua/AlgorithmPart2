@@ -1,21 +1,7 @@
 /**
  * Created by Hua on 3/6/2017.
- * <p/>
- * <p/>
- * <p/>
- * Performance requirements.
- * All methods (and the constructor) should take time at most proportional to E + V in the worst case, where E and V are
- * the number of edges and vertices in the digraph, respectively. Your data type should use space proportional to E + V.
- * <p/>
- * <p/>
- * Length = 4 ancestor = 1
- * Length = 3 ancestor = 5
- * Length = 4 ancestor = 0
- * Length = -1 ancestor = -1
- * Time                     = 0.023
+ * updated by Hua on 1/11/2018
  */
-
-//import edu.princeton.cs.algs4.*;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.Digraph;
 import edu.princeton.cs.algs4.Queue;
