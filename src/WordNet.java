@@ -92,23 +92,38 @@ public class WordNet {
                 graph.addEdge(v, Integer.parseInt(line[i]));
             }
         }
-
-        // throw IllegalArgumentException when detects a cycle and over one root
         if(!isRootedDag(graph)) throw new IllegalArgumentException("");
-
         return graph;
     }
 
-    private boolean isRootedDag(Digraph graph){
-        /*
-        int[] isMarked = new int[graph.V()];  // 0 not visited, 1 visited, 2 currently visit
-        HashSet<Integer> roots = new HashSet();
-        for(int v=0; v<graph.V(); v++){
-            if(isMarked[v] == 0) dfs(v, graph, isMarked, roots);
-        }
-        */
+    private boolean hasCycle = false;  // need it to record has found cycle
+    private boolean hasCycle(Digraph graph){
+        boolean[] isVisited = new boolean[graph.V()];
+        boolean[] isVisiting = new boolean[graph.V()];
+        for(int v =0; v<graph.V(); v++)
+            if(!isVisited[v] && !hasCycle) dfs(graph, v, isVisited, isVisiting);
+        return hasCycle;
+    }
 
-        if(new DirectedCycle(graph).hasCycle()) {
+    // dfs and backtracking
+    private void dfs(Digraph graph, int v, boolean[] isVisited, boolean[] isVisiting){
+        if(hasCycle) return ; // early return
+
+        isVisited[v] = true;
+        isVisiting[v] = true;
+        for(int w : graph.adj(v)){
+            if(isVisiting[w]) {
+                hasCycle = true;
+                return;
+            }
+            if(!isVisited[w]) dfs(graph, w, isVisited, isVisiting);
+        }
+        isVisiting[v] = false;   //backtrack
+    }
+
+    private boolean isRootedDag(Digraph graph){
+        //if(new DirectedCycle(graph).hasCycle()) {
+        if(hasCycle(graph)) {
             System.out.println("find cycle");
             return false;
         }
@@ -201,7 +216,7 @@ public class WordNet {
         ///*
         Stopwatch time = new Stopwatch();
         WordNet wordnet = new WordNet(args[0], args[1]);
-
+        /*
         boolean isFoundOneWordMapMultipleId = false;
         for (String s : wordnet.map.keySet()) {
             if (wordnet.map.get(s).size() > 1) isFoundOneWordMapMultipleId = true;
@@ -225,7 +240,7 @@ public class WordNet {
         unitTestDistance("worm", "worm", 0, wordnet);
         System.out.println(String.format("%-25s= ", "Time") + time.elapsedTime());
 
-        //*/
+        */
     }
 
     private static void unitTestAncestor(String word1, String word2, String correctAncestor, WordNet wordnet) {
