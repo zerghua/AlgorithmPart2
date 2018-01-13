@@ -1,0 +1,43 @@
+Minimum Spanning tree(MST)
+----------------------------------------------------------
+Given undirected graph G with positive edge weights(connected).
+A Spanning tree of G is a subgraph T that is both a tree(connected
+and acyclic) and spanning(includes all of the vertices).
+
+Goal. Find a min weight a spanning tree.
+Brute force. Try all spanning trees?
+
+
+Example.
+Network design(Bike route).
+Models of nature.
+Medical image processing.
+
+
+
+Greedy Algorithm
+----------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+----------------------------------------------------------
+
+
+
+
+----------------------------------------------------------
+
+
+
+----------------------------------------------------------
+
+
+
+----------------------------------------------------------
