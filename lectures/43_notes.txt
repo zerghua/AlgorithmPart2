@@ -103,11 +103,66 @@ double weight()     // total weight of MST
 
 
 
-
+Kruskal's Algorithm
 ----------------------------------------------------------
+Consider edges in ascending order of weight.
+- Add next edge to tree T unless doing so would create a cycle.
+(Ignore edges if creates a cycle)
+
+Challenge. Would adding edge v-w to tree T create a cycle?
+If not, add it.
+
+How difficult?
+- E + v
+- V         -> run DFS from v, check if w is reachable.
+- logV
+- log * V   -> use the union-find data structure!
+- 1
+
+
+Efficient solution. Use the union-find data strcuture.
+- Maintain a set for each connected component in T.
+- If v and w are in same set, then adding v-w would
+create a cycle
+- To add v-w to T, merge sets containing v and w.
+
+
+public class KruskalMST{
+    private Queue<Edge> mst = new Queue<Edge>();
+
+    public KruskalMST(EdgeWeightedGraph G){
+        MinPQ<Edge> pq = new MinPQ<Edge>();
+        for(Edge e: G.edges()) pq.insert(e);
+
+        UF uf = new UF(G.V());
+        while(!pq.isEmpty() && mst.size() < G.V() -1){
+            Edge e = pq.delMin();
+            int v = e.either(), w = e.other(v);
+            if(!uf.connected(v,w)){
+                uf.union(v,w);
+                mst.enqueue(e)
+            }
+        }
+    }
+    public Iterable<Edge> edges(){
+        return mst;
+    }
+}
+
+
+Time complexity: ElogE
+
+Operations      frequency           time per op
+----------------------------------------------------
+build pq            1                     E
+delete-min          E                   logE
+connected           E                   logV
+union               V                   logV
+only will add V-1 egdes.
 
 
 
+Prim's Algorithm
 ----------------------------------------------------------
 
 
