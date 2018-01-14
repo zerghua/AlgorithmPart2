@@ -164,7 +164,126 @@ only will add V-1 egdes.
 
 Prim's Algorithm
 ----------------------------------------------------------
+- Start with vertex 0 and greedily grow tree T.
+- Add to T the min weight edge with exactly one endpoint in T.
+- Repeat until V - 1 edges.
+
+
+Implementation Challenge.
+Find the min weight edge with exactly one endpoint in T.
+
+How difficult?
+- E         -> try all edges
+- V
+- logE      -> use a priority queue.(lazy implementation)
+- log * E
+- 1
+
+
+Lazy solution. Maintain a PQ of edges with(at least)
+one endpoint in T.
+- Key= edge; priority= weight of edge.
+- Delete-min to determine next edge e = v-w to add to T.
+- Disregard if both endpoints v and w are in T.
+- Otherwise, let w be the vertex not in T:
+    - add to PQ any edge incident to w(assuming other endpoint
+    not in T)
+    - add w to T.
+
+
+public class LazyPrimMST{
+    private boolean[] marked;
+    private Queue<Edge> mst;
+    private MinPQ<Edge> pq;
+
+    public LazyPrimMST(WeightedGraph G){
+        pq = new MinPQ<Edge>();
+        mst = new Queue<Edge>();
+        marked = new boolean[G.V()];
+        visit(G, 0);
+
+        while(!pq.isEmpty()){
+            Edge e = pq.delMin();
+            int v = e.either(), w = e.other(v);
+            if(marked[v] && marked[w]) continue;
+            mst.enqueue(e);
+            if(!marked[v]) visit(G, v);
+            if(!marked[w]) visit(G, w);
+        }
+    }
+
+    private void visit(WeightedGraph G, int v){
+        marked[v] = true;
+        for(Edge e : G.adj(v)){
+            if(!marked[e.other(v)]) pq.insert(e);
+        }
+    }
+
+    public Iterable<Edge> mst(){return mst;}
+}
 
 
 
+Time Complexcity. ElogE
+Operations      frequency           time per op
+----------------------------------------------------
+delete min            E                   logE
+insert                E                   logE
+
+
+
+eager implementation
+solution. Maintain a PQ of vertices connected by an edge to T,
+where priority of vertex v=weight of shortest edge connecting
+v to T.
+
+
+Indexed priority queue
+Associate an index between 0 and N-1 with each key in a priority queue.
+- Client can insert and delete the minimum.
+- Client can change the key by specifying the index.
+
+public class IndexMinPQ<Key extends Comparable<Key>>
+    IndexMinPQ(int N)
+void insert(int i, Key key)
+void decreaseKey(int i, Key key)
+boolean contains(int i)
+int delMin()
+boolean isEmpty()
+int size()
+
+
+
+Time complexity. can be ElogV
+
+
+
+MST context
 ----------------------------------------------------------
+Does linear algorithm exist for MST?
+Not sure yet.
+
+
+Euclidean MST
+Given N points in the plane, find MST connecting them, where
+the distances between points pairs are their Euclidean distances.
+
+
+Brute force: Compute ~N^2/2 distances and run Prim's algorithm
+Ingenuity. Exploit geometry and do it in ~cNlogN
+
+
+Scientific application: clustering
+k-clustering.
+Distance function.
+
+Goal. Divide into clusters so that objects in different clusters
+are far apart.
+
+
+single-link clustering.
+
+
+
+
+
