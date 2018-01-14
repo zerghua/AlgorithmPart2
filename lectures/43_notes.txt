@@ -4,7 +4,7 @@ Given undirected graph G with positive edge weights(connected).
 A Spanning tree of G is a subgraph T that is both a tree(connected
 and acyclic) and spanning(includes all of the vertices).
 
-Goal. Find a min weight a spanning tree.
+Goal. Find a min weight of a spanning tree.
 Brute force. Try all spanning trees?
 
 
@@ -17,17 +17,89 @@ Medical image processing.
 
 Greedy Algorithm
 ----------------------------------------------------------
+Simplifying assumptions.
+- Edge weights are distinct.
+- Graph is connected.
+
+Consequence. MST exists and is unique
 
 
+Cut property.
+Def. A cut in a graph is partition of its vertices into
+two(nonempty) sets.
+
+Def. A crossing edge connects a vertex in one set with a
+vertex in the other.
+
+Cut property. Given any cut, the crossing edge of min weight
+is in the MST.
 
 
+Greedy MST algorithm
+- Start with all edges colored gray.
+- Find cut with no black crossing edges; color its min-weight
+edge black.
+- Repeat until V-1 edges are colored black.
+
+Efficient implementations. Choose cut? Find min-weight edge?
+1. Kruskal's algorithm.
+2. Prim's algorithm.
+3. Boruvka's algorithm.
 
 
+Removing two simplifying assumptions.
+Q. What if edge weights are not all distinct?
+A. Greedy MST algorithm still correct if weights are present.
+multiple MST path.
+
+Q. What if graph is not connected?
+A. Compute minimum spanning forest = MST of each component.
 
 
-
-
+Weighted edge API
 ----------------------------------------------------------
+Edge abstraction needed for weighted edges.
+
+public class Edge implements Comparable<Edge>
+    Edge(int v, int w, double weight)
+int either()
+int other(int v)
+int compareTo(Edge that)
+double weight()
+String toString()
+
+Idiom for processing an edge e:
+int v = e.either(), w = e.other(v);
+
+
+Edge-weighted graph API
+
+public class EdgeWeightedGraph
+    EdgeWeightedGraph(int v)
+void AddEdge(Edge e)
+Iterable<Edge> adj(int v)
+
+Conventions. Allow self-loops and parallel edges.
+
+
+Adjacency-lists representation
+Maintain vertex-indexed array of Edge lists.
+
+
+// add edge to both adjacency lists
+public void addEdge(Edge e){
+    int v = e.either(), w = e.other(v);
+    adj[v].add(e);
+    adj[w].add(e);
+}
+
+
+MST API
+public class MST
+    MST(EdgedWeightedGraph G)
+Iterable<Edge> edge()
+double weight()     // total weight of MST
+
 
 
 
