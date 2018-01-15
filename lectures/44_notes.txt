@@ -247,3 +247,50 @@ Critical path method(CPM) to convert to edged-weighted DAG
 
 Negative Weights
 ----------------------------------------------------------
+Dijstra doesn't work on negative edge weights.
+
+Negative cycles.
+Def. is a directed cycle whose sym of edge weights is negative.
+
+Proposition.
+A SPT exists iff no negative cycles.
+
+
+Bellman-Ford algorithm: visit V times, relax all E edges.
+for(int i=0; i < G.V(); i++){
+    for(int v=0; v<G.V(); v++){
+        for(DirectedEdge e : G.adj(v)) relax(e);
+    }
+}
+
+Time complexity: E*V
+
+
+
+Single source shortest-paths implementation
+Algorithm                    restriction           typical case     worst case
+---------------------------------------------------------------------------
+topological sort             no directed cycle      E + V           E + V
+Dijkstra(binary heap)        no negative weights    E*logV          E*logV
+Bellman-Ford                 no negative cycles     E*v             E*V
+Bellman-Ford(queue-based)    no negative cycles     E + V           E*V
+
+
+remark 1. Directed cycles make the problem harder.
+remark 2. Negative weights make the problem harder.
+remark 3. Negative cycles make the problem intractable.
+
+
+
+
+Bellman-Ford algorithm can be used to find negative cycle.
+Negative cycle application: arbitrage detection
+
+
+
+
+
+
+
+
+
