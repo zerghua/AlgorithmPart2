@@ -1,0 +1,115 @@
+Shortest Paths APIs
+----------------------------------------------------------
+Shortest paths in an edge-weighted digraph
+Given an edge weighted digraph, find the shortest path from s to t.
+
+Shortest path applications
+- PERT/CPM
+- Map routing
+- Seam carving
+...
+
+
+Restrictions on edge weights?
+- Nonnegative weights.
+- Arbitrary weights.
+- Euclidean weights.
+
+
+Cycles?
+- No directed cycles.
+- No "negative cycles"
+
+Simplifying assumptions. Shortest paths from s to t exists.
+
+
+public class DirectedEdge{
+    DirectedEdge(int v, int w, double weight)
+    int from()
+    int to()
+    double weight()
+    String toString()
+}
+
+public class EdgeWeightedDigraph{
+    EdgeWeightedDigraph(int v)
+void addEdge(DirectedEdge e)
+Iterable<DirectedEdge> adj(int v)
+    ...
+}
+
+
+Single-source shortest paths API
+Goal. Find the shortest path from s to every other vertex.
+
+public class SP{
+    SP(EdgeWeightedGraph G, int s)
+double distTo(int v)
+Iterable<DirectedEdge> pathTo(int v)
+boolean hasPathTo(int v)
+}
+
+
+
+Shortest Path Properties
+----------------------------------------------------------
+Data structures for single-source shortest paths
+Goal. Find the shortest path from s to every other vertex.
+Observation. A shortest-paths tree(SPT) solution exists. why?
+
+Consequence. Can represent the SPT with two vertex-indexed arrays:
+- distTo[v] is length of shortest path from s to v.
+- edgeTo[v] is last edge on shortest path from s to v.
+
+public Iterable<DirectedEdge> pathTo(int v){
+    Stack<DirectedEdge> path = new Stack<DirectedEdge>();
+    for(DirectedEdge e = edgeTo[v]; e != null; e = edgeTo[e.from()]){
+        path.push(e);
+    }
+    return path;
+}
+
+Edge relaxation
+Relax edge e = v -> w
+
+if e = v->w gives shortest path to w through v,
+update both distTo[w] and edgeTo[w]
+
+
+private void relax(DirectedEdge e){
+    int v = e.from(), w = e.to();
+    if(distTo[w] > distTo[v] + e.weight()){
+        distTo[w] = distTo[v] + e.weight();
+        edgeTo[w] = e;
+    }
+}
+
+
+Generic Shortest-paths algorithm
+Initialize distTo[s] = 0 and distTo[v] = Max for all other vertices.
+repeat until optimality conditions are satisfied:
+    - Relax any edge.
+
+
+Efficient implementation. How to choose which edge to relax?
+1. Dijkstra's algorithm(nonnegative weights)
+2. Topological sort algorithm(no directed cycles)
+3. Bellman-ford algorithm(no negative cycles)
+
+
+
+Dijkstra's Algorithms
+----------------------------------------------------------
+
+
+
+
+
+Edge-Weighted DAGs
+----------------------------------------------------------
+
+
+
+
+Negative Weights
+----------------------------------------------------------
