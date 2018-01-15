@@ -100,6 +100,66 @@ Efficient implementation. How to choose which edge to relax?
 
 Dijkstra's Algorithms
 ----------------------------------------------------------
+-Consider vertices in increasing order of distance from s.(
+non-tree vertex with the lowest distTo[] value).
+-Add vertex to tree and relax all edges pointing from that vertex.
+
+
+public class DijkstraSP{
+    private DirectedEdge[] edgeTo;
+    private double[] distTo;
+    private IndexMinPQ<Double> pq;
+
+    public DijkstraSP(EdgeWeightedGraph G, int s){
+        edgeTo = new DirectedEdge[G.V()];
+        distTo = new double[G.V()];
+        pq = new IndexMinPQ<Double>(G.V());
+
+        for(int v = 0; v < G.V(); v++){
+            distTo[v] = Double.POSITIVE_INFINITY;
+        }
+        distTo[s] = 0.0;
+
+        pq.insert(s, 0.0);
+        while(!pq.isEmpty()){
+            int v = pq.delMin();
+            for(DirectedEdge e : G.adj(v)) relax(e);
+        }
+    }
+
+    private void relax(DirectedEdge e){
+        int v = e.from(), w = e.to();
+        if(distTo[w] > distTo[v] + e.weight()){
+            distTo[w] = distTo[v] + e.weight();
+            edgeTo[w] = e;
+
+            if(pq.contains(w)) pq.decreaseKey(w, distTo[w]);
+            else               pq.insert(w, distTo[w]);
+        }
+    }
+}
+
+
+Prim's algorithm is essentially the same as Dijkstra's algorithm.
+Both are in a family of algorithms that compute a graph's
+spanning tree.
+
+
+Main distinction: Rule used to choose next vertex for the tree.
+- Prim's: closest vertex to the tree(via an undirected edge).
+- Dijkstra: closest vertex ot the source(via a directed path).
+
+
+Note: DFS and BFS are also in this family of algorithm.
+
+
+Time complexity of Dijkstra.
+depends on PQ implementation: v insert, v delete-min, E decrease-key
+----------------------------------------------
+unordered array: V^2        optimal for dense graph
+binary heap:     ElogV      ideal for sparse graph
+d-way heap:      ElogV      worth the trouble for time critical app.
+Fibonacci heap:  E + Vlogv  not worth implement it.
 
 
 
