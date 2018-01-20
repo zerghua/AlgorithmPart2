@@ -67,7 +67,9 @@ public class SeamCarver {
     // energy of pixel at column x and row y
     // passed unit test, printEnergy.java
     public double energy(int x, int y) {
-        if(x <0 || x>=width || y<0 || y>=height) throw new IllegalArgumentException("");
+        if(x <0 || x>=width || y<0 || y>=height) {
+            throw new IllegalArgumentException(String.format("x=%d width=%d, y=%d height=%d",x,width,y,height));
+        }
         if(x == 0 || x == width - 1 || y == 0 || y == height -1 ) return 1000;  // border are defined as 1000
 
         // math calculation of energy
@@ -182,21 +184,31 @@ public class SeamCarver {
     }
 
     private void removeVerticalSeam(int[] seam, Pixel[][] p, int width){
+        // check int[] seam
+        System.out.println("print seam:");
+        for(int i=0; i < seam.length; i++){
+            int col_index = seam[i];
+            if(col_index< 0 || col_index >= width) throw new IllegalArgumentException("");
+            if(i>0 && Math.abs(seam[i] - seam[i-1]) > 1) throw new IllegalArgumentException("");
+            System.out.print(col_index + " ");
+        }
+
         for(int row=0; row < seam.length; row++){
             int col_index = seam[row];
-            if(col_index< 0 || col_index >= width) throw new IllegalArgumentException("");
             System.arraycopy(p[row], col_index +1, p[row], col_index, width - col_index - 1);
         }
 
+        System.out.println("inside width="+width);
         // update energy
         for(int row=0; row<height(); row++) {
             for(int col=seam[row]-1;col<=seam[row];col++){
-                if(col >= 0) p[row][col].energy = energy(col, row);
+                System.out.println("print coordinate: " + col + "  " + row);
+                if(col >= 0 && col < width) p[row][col].energy = energy(col, row);
             }
         }
     }
 
-
+    /*
     private void printMatrix(Pixel[][] p){
         System.out.println("\n");
 
@@ -207,6 +219,6 @@ public class SeamCarver {
             }
         }
         System.out.println("\n");
-
     }
+    */
 }

@@ -27,9 +27,9 @@ public class ResizeDemo {
         int removeRows = Integer.parseInt(args[2]);
         */
 
-        //Picture inputImg = new Picture("seam/7x10.png");
-        Picture inputImg = new Picture("seam/HJocean.png");
-        int removeColumns = 100;
+        Picture inputImg = new Picture("seam/10x12.png");
+        //Picture inputImg = new Picture("seam/HJocean.png");
+        int removeColumns = 1;
         int removeRows = 2;
 
         StdOut.printf("image is %d columns by %d rows\n", inputImg.width(), inputImg.height());
