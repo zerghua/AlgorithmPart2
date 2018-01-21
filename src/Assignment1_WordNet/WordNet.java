@@ -10,6 +10,19 @@ import java.util.ArrayList;
 /**
  * Created by Hua on 3/6/2017.
  * updated by Hua on 1/11/2018
+ *
+ *
+ * ASSESSMENT SUMMARY
+ * Compilation: PASSED
+ * API: PASSED
+ * Findbugs: FAILED (6 warnings)
+ * PMD: PASSED
+ * Checkstyle: FAILED (0 errors, 50 warnings)
+ * Correctness: 35/35 tests passed
+ * Memory: 4/4 tests passed
+ * Timing: 29/27 tests passed
+ * Aggregate score: 101.48%
+ * [Compilation: 5%, API: 5%, Findbugs: 0%, PMD: 0%, Checkstyle: 0%, Correctness: 60%, Memory: 10%, Timing: 20%]
 */
 
 public class WordNet {
