@@ -30,7 +30,7 @@ public class ResizeDemo {
         Picture inputImg = new Picture("seam/10x12.png");
         //Picture inputImg = new Picture("seam/HJocean.png");
         int removeColumns = 1;
-        int removeRows = 2;
+        int removeRows = 3;
 
         StdOut.printf("image is %d columns by %d rows\n", inputImg.width(), inputImg.height());
         SeamCarver sc = new SeamCarver(inputImg);
