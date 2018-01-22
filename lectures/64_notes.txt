@@ -87,18 +87,98 @@ path with no full forward or empty backward edges.
 
 Running Time Analysis
 ----------------------------------------------------------
+Questions.
+- How to compute a mincut?  Easy
+- How to find an augmenting path?  BFS works
+- If FF terminates, does it always compute a maxflow? Yes
+- Does FF always terminate?  Yes, provided edge capacities are integers.
+If so, after how many augmentations? require clever analysis
+
+Important special case.
+Edge capacities are integers between 1 and U.
+
+
+Invariant. The flow is integer-values throughout Ford-Fulkerson.
+
+Proposition. Number of augmentations <= the value of the maxflow.
+Pf. Each augmentation increases the value by at least 1.
+
+Integrality theorem. There exists an integer-values maxflow.
+
+
+
+Bad case for FF.
+Bad news. Even when edge capacities are integers, number of
+augmenting paths could be equal to the value of the maxflow.
+
+Good news. This case is easily avoided.(use shortest/fattest path)
+
+
+FF performance depends on choice of augmenting paths.
+Augmenting path         number of paths         Implementation
+----------------------------------------------------------------
+shortest path           < = E*V                 queue(BFS)
+fattest path            <= ELn(EU)              priority queue
+random path             <= EU                   Randomized queue
+DFS path                <= EU                   stack(DFS)
 
 
 
 
 
-
-
-
-
-
-
+Java Implementation
 ----------------------------------------------------------
+Flow edge data type.
+Flow network type.
+Residual capacity.
+Augment flow.
+
+Residual network.
+
+
+public class FlowEdge{
+    FlowEdge(int v, int w, double capacity)
+    int from()
+    int to()
+    int other(int v)
+    double capacity()
+    double flow()
+    double residualCapacityTo(int v)
+    void addResidualFlowTo(int v, double delta)
+    String toString()
+}
+
+
+public class FlowNetwork{
+    FlowNetwork(int v)
+    void addEdge(FlowEdge e)
+    Iterable<FlowEdge> adj(int v)
+    Iterable<FlowEdge> edges()
+    int V()
+    int E()
+}
+
+
+
+
+
+Maxflow Applications
 ----------------------------------------------------------
-----------------------------------------------------------
-----------------------------------------------------------
+bipartite matching:
+N students apply for N jobs. Is there a way to match all students to jobs?
+Given a bipartite graph, find a perfect matching.
+
+What the mincut tells us.
+S = students on s side of cut
+T = companies on s side of cut.
+Fact: S > T: students in s can be matched only to companies in T
+When no perfect maching, mincut tells us why.
+
+
+
+baseball elimination.
+which teams have a chance of finishing the season with the most wins?
+
+game vertices and team vertices.
+
+
