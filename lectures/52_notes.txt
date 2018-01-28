@@ -1,0 +1,111 @@
+R-way Tries
+----------------------------------------------------------
+Tries. [pronounced as "try"]
+- For now, store characters in nodes(not keys).
+- Each node has R children, one for each possible character.
+- Store values in nodes corresponding to last characters in keys.
+
+
+Search in a trie
+Follow links corresponding to each character in the key.
+- Search hit: node where search ends has a non-null value.
+- Search miss: reach null link or node where search ends has null value.
+
+
+Insertion into a trie
+Follow links corresponding to each character in the key.
+- Encounter a null link: create new node
+- Encounter the last character of the key: set value in that node.
+
+
+public class TrieST<Value>{
+    private static final int R = 256;
+    private Node root = new Node();
+
+    private static class Node{
+        private Object value;
+        private Node[] next = new Node[R];
+    }
+
+    public void put(String key, Value val){
+        root = put(root, key, val, 0);
+    }
+
+    private Node put(Node x, String key, Value val, int d){
+        if(x == null) x= new Node();
+        if(d == key.length()){
+            x.val = val;
+            return x;
+        }
+        char c = key.charAt(d);
+        x.next[c] = put(x.next[c], key, val, d+1);
+        return x;
+
+    }
+
+    public boolean contains(String key){
+        return get(key) != null;
+    }
+
+    public Value get(String key){
+        Node x = get(root, key, 0);
+        if(x == null) return null;
+        return (Value) x.val;
+    }
+
+    private Node get(Node x, String key, int d){
+        if(x == null) return null;
+        if(d == key.length()) return x;
+        char c = key.charAt(d);
+        return get(x.next[c], key, d+1);
+    }
+}
+
+
+Trie performance.
+Search hit. Need to examine all L characters for equality.
+
+Search miss.
+- Could have mismatch on first character.
+- Typical case: examine only a few characters(sublinear).
+
+Space. R null links at each leaf.(but sublinear space possible
+if many short strings share common prefixes)
+
+Bottom line. Fast search hit and even faster search miss, but waste space.
+
+
+Popular interview questions
+Goal. Design a data structure to perform efficient spell checking.
+Solution. Build a 26-way trie(key=word, value = bit)
+
+
+Deletion in an R-way trie
+To delete a key-value pair:
+- Find the node corresponding to key and set value to null.
+- If node has null value and all null links, remove that node(and recur).
+
+
+R-way trie.
+- Method of choice for small R.
+- Too much memory for large R. d
+
+Challenge. Use less memory, e.g, 65536-way trie for unicode!
+
+
+
+
+
+Ternary Search Tries
+----------------------------------------------------------
+
+
+
+
+
+
+----------------------------------------------------------
+
+
+
+
