@@ -222,6 +222,94 @@ Disadvantages quicksort
 
 
 
+3-way Radix Quicksort
+----------------------------------------------------------
+Do 3-way partitioning on the dth character.
+- Less overhead than R-way partitioning in MSD string sort.
+- Does not re-examine characters equal to the partitioning char(
+but does re-examine character not equal to the partitioning char).
 
+
+performance vs standard quicksort
+standard quicksort
+- Uses ~2NlnN string compares on average
+- Costly for keys with long common prefixes(and this is a common case!)
+
+3-way string(radix) quicksort.
+- Uses ~2NlnN character compares on average for random strings.
+- Avoids re-comparing long common prefixes.
+
+MSD String sort.
+- Is cache-inefficient.
+- Too much memory storing count[]
+- Too much overhead reinitializing count[] and aux[]
+
+3-way string quicksort.
+- Has a short inner loop
+- Is cache-friendly
+- Is in-place.
+
+
+
+
+Suffix Arrays
 ----------------------------------------------------------
-----------------------------------------------------------
+suffix sort
+- form suffix
+- sort suffix
+
+Keyword-in-contest search: suffix sorting solution
+- Preprocess: suffix sort the text.
+- Query: binary search for query, scan until mismatch
+
+
+Longest repeated substring
+Given a string of N characters, find the longest repeated substring.
+
+Applications. Bioinformatics, cryptanalysis, data compression...
+
+
+Brute-force algorithm
+- Try all indices i and j for start of possible match.
+- Compute longest common prefix(LCP) for each pair.
+
+Analysis. Running time <= DN^2, where D is length of longest match.
+
+using suffix sort.
+
+public String lrs(String s){
+    int N= s.length();
+    String[] suffixes = new String[N];
+
+    // create suffix array, can be linear, depends on implementation
+    for(int i=0; i<N; i++) suffixes[i] = s.substring(i,N);
+
+    // sort suffix array
+    Arrays.sort(suffixes);
+
+    // find LCP between adjacent suffixes in sorted order.
+    String lrs = "";
+    for(int i=0; i<N-1; i++){
+        int len = lcp(suffixes[i], suffixes[i+1]);
+        if(len > lrs.length()) lrs = suffixes[i].substring(0,len);
+    }
+    return lrs;
+}
+
+
+Suffix sorting: worst-case input
+Bad input: longest repeated substring very long.
+- Ex. same letter repeated N times.
+- Ex. two copies of the same java codebase.
+
+Problem. suffix sort an arbitrary string of length N.
+Q. What is worst-case running time of best algorithm for problem?
+- Linearithmic. ManberMyers algorithm
+- Linear. suffix tree(beyond our scope)
+
+
+
+
+
+
+
