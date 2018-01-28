@@ -92,17 +92,51 @@ ASCII       128         7           ASCII characters
 
 
 
+Key-Indexed Counting(sorting)
+----------------------------------------------------------
+Lower bound. ~NlgN compares required by any compare-based algorithm.
+
+Q. Can we do better(despite the lower bound)?
+A. Yes. If we don't depend on compare
+
+
+Key-Indexed Counting: assumptions about keys
+Assumption. Keys are integers between 0 and R-1.
+Implication. Can use key as an array index.
+
+
+Applications.
+- Sort string by first letter.
+- Sort class roster by section.
+- Sort phone numbers by area code.
+- Subroutine in a sort algorithm.
+
+Remark. Keys may have associated data, can't just count up
+number of keys of each value.
+
+Goal. Sort an array a[] of N integers between 0 and R-1.
+- Count frequencies of each letter using key as index
+- Compare frequency cumulates which specify destinations.
+- Access cumulates using key as index to move items.
+- Copy back into original array.
+
+Stable? Yes
 
 
 
-Key-Indexed Counting
+
+
+LSD Radix Sort
 ----------------------------------------------------------
 
 
 
 
 
-----------------------------------------------------------
+
+
+
+
 ----------------------------------------------------------
 ----------------------------------------------------------
 ----------------------------------------------------------
