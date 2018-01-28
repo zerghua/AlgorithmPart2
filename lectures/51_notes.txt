@@ -128,15 +128,100 @@ Stable? Yes
 
 LSD Radix Sort
 ----------------------------------------------------------
+Least Significant digit first string sorting
+- consider characters from right to left.
+- stably sort using dth character as the key(using key-indexed counting).
+
+
+public class LDS{
+    public static void sort(String[] a, int w){
+        int R =256;
+        int N = a.length;
+        String[] aux = new String[N];
+
+        for(int d = W-1; d>= 0; d--){
+            // Key-Indexed Counting sort
+            int[] count = new int[R+1];
+            for(int i=0; i<N; i++) count[a[i].charAt(d) + 1]++;
+            for(int r=0; r<R; r++) count[r+1] += count[r];
+            for(int i=0; i<N; i++) aux[count[a[i].charAt(d)]++] = a[i];
+            for(int i=0; i<N; i++) a[i] = aux[i];
+        }
+    }
+}
+
+
+Problem. Sort one million 32-bit integers.()
+Ex. Google interview.
+
+Which sorting method to use?
+- Insertion sort.
+- Mergesort.
+- Quicksort.
+- Heapsort.
+- LSD string sort.  This one.
 
 
 
 
 
-
-
-
-
+MSD Radix Sort
 ----------------------------------------------------------
+Most significant digit string sort.(sort from left to right)
+- Partition array into R pieces according to first character(use key-indexed counting).
+- Recursively sort all strings that start with each character(
+key-indexed counts delineate subarrays to sort).
+
+
+public static void sort(String[] a){
+    aux = new String[a.length];
+    sort(a, aux, 0, a.length-1, 0);
+}
+
+private static void sort(String[] a, String[] aux, int lo, int hi, int d){
+    if(hi <= lo) return;
+    int[] count = new int[R+2];
+    for(int i=lo; i<=hi; i++) count[charAt(a[i],d)+2]++;
+    for(int r=0; r<R+1; r++) count[r+1] += count[r];
+    for(int i=lo; i<=hi; i++) aux[count[charAt(a[i],d)]++] = a[i];
+    for(int i=lo; i<=hi; i++) a[i] = aux[i-lo];
+
+    for(int r=0;r<R; r++)
+        sort(a, aux, lo + count[r], lo + count[r+1]-1, d+1);
+}
+
+Potential for disastrous performance
+Observation 1. Much too slow for small subarrays.
+- Each function call needs its own count[] array
+- ACSII(256 counts): 100x slower than copy pass for N=2.
+- Unicode(65536 counts): 32000x slower for N=2.
+
+Observation 2.
+Huge number of small subarrays because of recursion.
+
+
+Solution. Cutoff to insertion sort for small subarrays.
+
+MSD string sort performance:
+- depends on the data
+- all the same string will need to scan every one of them.
+- can be sublinear in input size.
+
+
+
+MSD string sort vs. quicksort for strings
+Disadvantages of MSD string sort.
+- Accesses memory "randomly"(cache inefficient).
+- Inner loop has a lot of instructions.
+- Extra space for count[]
+- Extra space for aux[]
+
+Disadvantages quicksort
+- Linearithmic number of string compares(not linear).
+- Has to rescan many characters in keys with long prefix matches.
+
+
+
+
 ----------------------------------------------------------
 ----------------------------------------------------------
