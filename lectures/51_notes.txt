@@ -1,0 +1,108 @@
+Strings in Java
+----------------------------------------------------------
+String. Sequence of characters.
+
+C char data type. Typically an 8-bit integer.
+- Supports 7-bit ASCII
+- Can represent only 256 characters.
+
+
+Java char data type. A 16-bit unsigned integer.
+- Support original 16-bit Unicode.
+- Support 21-bit unicode 3.0(awkwardly).
+
+
+The String data type. Sequence of characters(immutable)
+Length. Number of characters.
+Indexing. Get the ith character.
+Substring extraction. Get a contiguous subsequence of characters.
+String concatenation. Append one character to end of another string.
+
+
+public final class String implements Comparable<String>{
+    private char[] value;
+    private int offset;
+    private int length;
+    private int hash;
+
+    public in length(){return length;}
+
+    public char charAt(int i){return value[i + offset];}
+
+    private String(int offset, int length, char[] value){
+        this.offset = offset;
+        this.length = length;
+        this.value = value;
+    }
+
+    public String substring(int from , int to){
+        return new String(offset + from, to - from, value);
+    }
+}
+
+
+String Underlying implementation.
+Immutable char[] array, offset and length.
+
+
+StringBuilder Underlying implementation.(mutable)
+Resizing char[] array and length.
+
+                        String                    StringBuilder
+Operation       guarantee   extra space     guarantee   extra space
+---------------------------------------------------------------------
+length()        1           1               1           1
+charAt()        1           1               1           1
+substring()     1           1               N           N
+concat()        N           N               1           1
+
+
+Memory. 40 + 2N bytes for a virgin String of length N.
+StringBuffer is similar to StringBuilder, but thread safe and slow.
+
+Note: Since Java 7 update 6(j7u6), substring of String no longer
+share char[] with original String to stop potential memory leak,
+but increase substring() time from constant to linear.
+
+
+
+How to efficiently form array of suffixes?
+
+
+Warmup: longest common prefix.
+Q. How long to compute length of longest common prefix?
+
+
+
+Alphabets
+Digital keys. Sequence of digits over fixed alphabet.
+Radix. Number of digits R in alphabet.
+
+Name        R()         lgR()       characters
+------------------------------------------------------------
+Binary      2           1           01
+OCTAL       8           3           01234567
+DECIMAL     10          4           0123456789
+HEXADECIMAL 16          4           0123456789ABDCEF
+ASCII       128         7           ASCII characters
+
+
+
+
+
+
+
+
+
+
+Key-Indexed Counting
+----------------------------------------------------------
+
+
+
+
+
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
+----------------------------------------------------------
