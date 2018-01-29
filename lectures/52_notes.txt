@@ -156,8 +156,99 @@ TST
 
 
 
-
+Character-Based Operations
 ----------------------------------------------------------
+
+Prefix match.
+Wildcard match.
+Longest prefix.
+
+
+Ordered iteration.
+To iterate through all keys in sorted order:
+- Do inorder traversal of trie; add keys encountered to a queue.
+- Maintain sequence of characters on path from root to node.
+
+public Iterable<String> keys(){
+    Queue<String> queue = new Queue<String>();
+    collect(root, "", queue);
+    return queue;
+}
+
+private void collect(Node x, String prefix, Queue<String> q){
+    if(x == null) return;
+    if(x.val != null) q.enqueue(prefix);
+    for(char c = 0; c < R; c++){
+        collect(x.next[c], prefix + c, q);
+    }
+}
+
+
+
+Prefix matches
+Find all keys in symbol table starting with a given prefix.
+
+Application: auto complete.
+
+public Iterable<String> keyWithPrefix(String prefix){
+    Queue<String> queue = new Queue<String>();
+    Node x = get(root, prefix, 0);
+    collect(x, prefix, queue);
+    return queue;
+}
+
+
+Longest prefix
+Ex. To send packet toward destination IP address, router choose
+IP address in routing table that is longest prefix match.
+- search for query string.
+- keep track of longest key encountered.
+
+public String longestPrefixOf(String query){
+    int length = search(root, query, 0, 0);
+    return query.substring(0, length);
+}
+
+private int search(Node x, String query, int d, int length){
+    if(x == null) return length;
+    if(x.val != null) length = d;
+    if(d == query.length()) return length;
+    char c = query.charAt(d);
+    return search(x.next[c], query, d+1, length);
+}
+
+
+
+T9 texting
+Goal. Type text messages on a phone keypad.
+Multi-tap input. Enter a letter by repeatedly pressing a key
+until the desired letter appears.
+
+
+Patricia trie.
+- Remove one-way branching
+- Each node represents a sequence of characters.
+- Implementation: one step beyond this course.
+
+
+Applications.
+- Database search
+- P2P network search
+- IP routing tables: find longest prefix match.
+- Compressed quad-tree for N-body simulation
+- Efficiently storing and querying XML documents.
+
+
+Suffix tree
+- Patricia trie of suffixes of a string.
+- Linear time constructions: beyond this course.
+
+Applications.
+- Linear time: longest repeated substring, longest common
+substring, longest palindromic substring, substring search,
+tandem repeats...
+- Computational biology databases.
+
 
 
 
