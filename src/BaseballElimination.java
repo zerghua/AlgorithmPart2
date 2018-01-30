@@ -17,9 +17,9 @@ import edu.princeton.cs.algs4.FordFulkerson;
  Checkstyle: FAILED (0 errors, 80 warnings)
  Correctness: 23/23 tests passed
  Memory: 4/4 tests passed
- Timing: 1/1 tests passed A
+ Timing: 1/1 tests passed
 
- ggregate score: 100.00%
+ Aggregate score: 100.00%
  [Compilation: 5%, API: 5%, Findbugs: 0%, PMD: 0%, Checkstyle: 0%, Correctness: 60%, Memory: 10%, Timing: 20%]
 
 
