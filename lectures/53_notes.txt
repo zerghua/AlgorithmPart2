@@ -98,11 +98,111 @@ public KMP(String pat){
 
 
 
+
+Boyer–Moore
 ----------------------------------------------------------
+match from right to left from pat.
+
+public int search(String txt, String pat){
+    int N = txt.length();
+    int M = pat.length();
+    int skip;
+    for(int i=0; i<= N-M; i += skip){
+        skip = 0;
+        for(int j= M-1; j>=0; j--){
+            if(pat.charAt(j) != txt.charAt(i+i)){
+                skip = Math.max(1, j - right[txt.charAt(i+i)]);
+                break;
+            }
+        }
+        if(skip == 0) return i;  // match
+    }
+    return N;
+}
+
+best case:  ~ N/M time
+Worst case. can be bad as ~ M*N (BBBBBB,  ABB)
+can improve worst case to ~3N
 
 
+
+
+Rabin–Karp
 ----------------------------------------------------------
+Basic idea = modular hashing
+- compute a hash of pattern characters 0 to M-1
+- for each i, compute a hash of text characters i to M+i-1
+- if pattern hash = text substring hash, check for a match
+
+
+Efficiently computing the hash function
+
+
+How to efficiently compute x(i+1) given we know x(i)?
+use math.
+
+x(i+1) = (x(i) - leading_digit * R^(M-1)) * R + trailing_digit
+
+
+public class RabinKarp{
+    private long patHash;
+    private int M;
+    private long Q;
+    private int R;
+    private long RM;    // R^(M-1) % Q
+
+    public RabinKarp(String pat){
+        M = pat.length();
+        R =256;
+        Q = longRandomPrime();
+
+        RM = 1;
+        for(int i=1; i<=M-1; i++) RM = (R * RM) % Q;
+        pathash = hash(pat, M);
+    }
+
+    // compute hash for M-digit key
+    private long hash(String key, int M){
+        long h = 0;
+        for(int j =0; j<M;j++){
+            h = (R*h + key.charAt(j)) % Q;
+        }
+        return h;
+    }
+
+    public in search(String txt){
+        int N = txt.length();
+        int txtHash = hash(txt, M);
+        if(patHash == txtHash) return 0;
+        for(int i = M; i< N; i++){
+            txtHash = (txtHash + Q - RM*txt.charAt(i-M)%Q)%Q;
+            txtHash = (txtHash*R + txt.charAt(i)) %Q;
+            if(patHash == txtHash) return i-M + 1; //Monte carlo version
+        }
+        return N;
+    }
+}
 
 
 
+
+Monte carlo version.
+- Always runs in linear time
+- Extremely likely to return correct answer(but not always, only check hash)
+
+
+Las Vega version.
+- Always returns correct answer.
+- Extremely likely to run in linear time(worst case is M*N)
+
+
+Advantages.
+- extends to match multiple strings.
+- extends to 2D pattern
+
+
+Disadvantages.
+- Arithmetic ops slower than char compares.
+- Las Vegas version requires backup.
+- poor worst-case guarantee.
 
