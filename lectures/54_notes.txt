@@ -1,0 +1,167 @@
+Regular Expression
+----------------------------------------------------------
+Substring search. Find a single in text.
+Pattern matching. Find one of a specified set of strings in text.
+
+operation       order       example RE      Matches
+----------------------------------------------------------
+concatenation   3           AABAAB          AABAAB
+or              4           AA | BAAB       AA   BAAB
+closure         2           AB*A            AA   ABABABABA
+(0 or more)
+parentheses     1           A(A|B)AAB       AAAAB  ABAAB
+wildcard                    .u.u.u
+character class             [A-Za-z][a-z]*
+at least 1                  A(BC)+DE
+exactly k                   [0-9]{5}-[0-9]{4}   08540-1234 (zip)
+[$_A-Za-z][$_A-Za-z0-9]*    java identifier
+
+Ex. [A-E]+ is shorthand for (A|B|C|D|E)(A|B|C|D|E)*
+
+
+
+
+REs and NFAs(non-deterministic finite state)
+----------------------------------------------------------
+RE. concise way to describe a set of strings.
+DFA. Machine to recognize whether a given string is in a given set.
+
+
+Kleene's theorem.
+- For any DFA, there exists a RE that describe the same set of strings.
+- For any RE, there exists a DFA that recognizes the same set of strings.
+
+
+
+
+NFA simulation
+----------------------------------------------------------
+public class NFA{
+    private char[] re;
+    private Digraph G;
+    private int M;
+
+    public NFA(String regexp){
+        M = regexp.length();
+        ret = regexp.toCharArray();
+        G = buildEpsilonTransitionDigraph();
+    }
+
+    public boolean recognizes(String txt){
+        Bag<Integer> pc = new Bag<Integer>();
+        DirectedDFS dfs = new DirectedDFS(G, 0);    // states reachable from start by e-transition
+        for(int v = 0; v < G.V*; v++)
+            if(dfs.marked(v)) pc.add(v);
+
+        for(int i=0; i<txt.length(); i++){
+            Bag<Integer> match = new Bag<Integer>();
+            for(int v : pc){    // state reachable after scanning past txt.charAt(i)
+                if(v == M) continue;
+                if((re[v] == txt.charAt(i)) || re[v] == '.')
+                    match.add(v+1);
+            }
+
+            dfs = new DirectedDFS(G, match);
+            pc = new Bag<Integer>();
+            for(int v = 0; v < G.V(); v++){ // follow e-transition
+                if(dfs.marked(v)) pc.add(v);
+            }
+        }
+
+        for(int v : pc) if (v == M) return true;
+        return false;
+    }
+
+    private Digraph buildEpsilonTransitionDigraph(){
+        Digraph G = new Digraph(M+1);
+        Stack<Integer> ops = new Stack<Integer>();
+        for(int i=0; i<M; i++){
+            int lp = i;
+
+            if([re[i] == '(' || re[i] == '|') ops.push(i);
+            else if(re[i] == ')'){
+                int or = ops.pop();
+                if(re[or] == '|'){
+                    lp = ops.pop();
+                    G.addEdge(lp, or+1);
+                    G.addEdge(or, i);
+                }
+                else lp = or;
+            }
+
+            if(i < M-1 && re[i+1] == '*'){
+                G.addEdge(lp, i+1);
+                G.addEdge(i+1, lp);
+            }
+
+            if(re[i] == '(' || re[i] == '*' || re[i] == ')')
+                G.addEdge(i, i+1);
+        }
+        return G;
+    }
+
+}
+
+
+
+NFA Construction
+----------------------------------------------------------
+Concatenation. Add match-transition edge from state corresponding
+to characters in the alphabet to next state.
+
+Alphabet. A B C D
+Metacharacters. () . * |
+Parentheses. Add e-transition edge from parentheses to next state.
+Closure. Add three e-transition edges for each * operator.
+Or. Add two e-transition edges for each | operator.
+
+Solution. Maintain a stack.
+- "(" symbol: push "(" onto stack.
+- "|" symbol: push "|" onto stack.
+- ")" symbol: pop corresponding "(" and possibly intervening "|";
+add e-transition edges for closure/or.
+
+
+
+Regular Expression Applications
+----------------------------------------------------------
+Generalized regular expression print(grep)
+grep. Take a RE as a command-line argument and print the lines
+from standard input having some substring that is matched by
+the RE.
+
+regexp = "(.*" + string + ".*)"
+
+worst case. M*N as brute force.
+
+
+Java string library. Use "".matches(regexp) for basic RE.
+
+
+Harvesting information.
+Goal. print all substrings of input that match a RE.
+
+java.util.regexp.Pattern
+java.util.regexp.Matcher
+
+Pattern pattern = Pattern.compile(regexp);
+Matcher matcher = Pattern.matcher(input);
+while(matcher.find()) print(matcher.group());
+
+
+Warning. Typical implementation does not guarantee performance.
+exponential time rather than quadratic.
+
+
+back-reference.
+- \1 notation matches subexpression that was matched earlier.
+- supported by typical RE implementation.
+
+
+compiler. A program that translates a program to machine code.
+- KMP   String -> DFA
+- grep  RE -> NFA
+- javac java language -> java byte code.
+
+
+
