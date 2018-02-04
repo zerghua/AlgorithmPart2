@@ -245,6 +245,84 @@ Can we do better?
 
 LZW Compression
 ----------------------------------------------------------
+Static model. Same model for all texts.
+- Fast.
+- Not optimal: different texts have different statistical properties.
+- Ex: ASCII, Morse code.
+
+Dynamic model. Generate model based on text.
+- Preliminary pass needed to generated model.
+- Must transmit the model.
+- Ex. Huffman code.
+
+Adaptive model. Progressively learn and update model vs you read text.
+- More accurate modeling produces better compression.
+- Decoding must start from beginning.
+- Ex: LZW.
+
+
+LWZ compression.
+- Create ST associating W-bit codewords with string keys.
+- Initialize ST with codewords for single-char keys.
+- Find longest string s in ST that is prefix of unscanned part of input.
+- Write the W-bit codeword assoicated with s.
+- Add s+c to ST, where c is next char in the input.
+
+Q. How to represent LZW compression code table?
+A. A trie to support longest prefix match.
+
+
+public static void compress(){
+    String input = BinaryStdIn.readString();
+
+    TST<Integer> st = new TST<Integer>();
+    for(int i=0; i<R; i++) st.put("", char(i), i);
+    int code = R + 1;
+
+    while(input.length() > 0){
+        String s = st.longestPrefixOf(input);
+        BinaryStdOut.write(st.get(s), W);
+        int t = s.length();
+        if(t < input.length() && code < L){
+            st.put(input.substring(0, t+1), code++);
+        }
+        input = input.substring(t);
+    }
+
+    BinaryStdOut.write(R, W);
+    BinaryStdOut.close();
+}
+
+
+
+LZW expansion.
+- Create ST associating string values with W-bit keys.
+- Initialize ST to contain single-char values.
+- Read a W-bit key.
+- Find associated string value in ST and write it out.
+- Update ST.
+
+
+Q. How to represent LZW expansion code table?
+A. An array of size 2^W.
+
+
+
+How big to make ST?
+- How long is message?
+- Whole message similar model?
+
+
+What to do ST fills up?
+- Throw away and start over.
+- Throw away when not effective.
+
+
+Data compression summary.
+Huffman: Represent fixed-length symbols with variable-length codes
+LZE: Represent variable-length symbols with fixed-length codes.
+
+
 
 
 
