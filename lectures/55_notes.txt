@@ -1,0 +1,97 @@
+Introduction to Data Compression
+----------------------------------------------------------
+compression reduces the size of a file:
+- to save space when storing it.
+- to save time when transmitting it.
+- most of files have lots of redundancy.
+
+
+who needs compression?
+- Moore's law: transistors on chip double very 18-24 months
+- Parkinson's law: data expends to fill space available.
+- text, image, sound, video...
+
+
+Applications.
+Generic file compression
+- Files: GZIP, BZIP, 7z
+- Archivers: PKZIP
+- File system: NTFS, HFS + ZFS
+
+Multimedia.
+- Image: GIF, JPEG
+- Sound: MP3
+- Video: MPEG, DivX, HDTV
+
+Communication.
+- ITU-T 4 Group 3 Fax
+- V.42bis modern
+- skype
+
+
+Database. Google, Facebook, ...
+
+
+Lossless compression and expansion
+Message. Binary data B we want to compress.
+Compress. Generates a "compressed" representation C(B).
+Expand. Reconstructs original bitstream B.
+
+
+Compression ratio. Bits in C(B) / bits in B.
+
+Ex. 50-75% better compression ratio for natural language.
+
+
+Data representation: genomic code
+Genome. String over the alphabet{A, C, T, G}
+Goal. Encode and N-character genome: ATAGATC...
+
+Standard ASCII encoding: 8 bits per char
+Two-bit encoding: 2 bits per char.
+Fixed-length code. K-bit code supports alphabet of size 2^k.
+
+
+data representation for 12/31/1999
+standard ascii, each char is 8 bits, so 10 char = 10*8=80bits
+store each number as int, each int is 32 bits, so 3 int=3*24=96bits
+since month in range [1,12], and day in range [1,31], so we
+only need to store the last few 4 for month(4^2=16), last 5 bits
+for day(2^5=32), 12 bits for year(2^12=4096), so 21 bits
+with 3 extra bits for byte alignment, so total 24 bits.
+
+
+US patent 5,533,051 on "Methods for data compression", which is
+capable of compression all files.
+
+
+
+Run-Length Coding
+----------------------------------------------------------
+Simple type of redundancy in a bitstream. Long runs of repeated bits.
+
+representation. 4-bit counts to represent alternating runs of
+0s and 1s: 15 0s, then 7 1s, then 7s, then 11 1s.
+15 7 7 11 -> 16 bits instead of 40
+
+
+Q. How many bits to store the counts?
+A. We'll use 8(but 4 in the example above)
+
+Q. What to do when run length exceeds max count?
+A. If longer than 255, intersperse runs of length 0.
+
+
+
+
+
+Huffman Compression
+----------------------------------------------------------
+
+
+
+----------------------------------------------------------
+
+
+
+
