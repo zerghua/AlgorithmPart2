@@ -1,0 +1,76 @@
+Introduction to Reductions
+----------------------------------------------------------
+Desiderata. Classify problems according to computational requirements.
+
+
+Reduction.
+Def. Problem X reduces to problem Y if you can use an algorithm
+that solves Y to help solve X.
+
+Ex 1(finding the median reduces to sorting)
+To find the median of N items:
+- sort N items.
+- return item in the middle.
+Cost of solving the median. NlogN + 1.
+
+
+Ex 2(elements distinctness reduces to sorting)
+To solve element distinctness on N items:
+- sort N items
+- check adjacent pairs for equality.
+Cost of solving element distinctness. NlogN + N.
+
+
+
+
+Designing Algorithms
+----------------------------------------------------------
+Design algorithm. Given algorithm for Y, can also solve X.
+
+Ex.
+- 3-collinear reduces to sorting
+- Finding the median reduces to sorting.
+- Element distinctness reduce to sorting.
+- CPM reduces to topological sort.
+- Arbitrage reduces to shortest path.
+- Burrows-Wheeler transform reduces to suffix sort.
+
+
+Convex hull reduces to sorting.
+Graham scan algorithm.
+
+Undirected shortest paths reduces to directed shortest path.
+ElogV + E.
+
+
+
+
+
+
+Establishing Lower Bounds
+----------------------------------------------------------
+Goal. Prove that a problem requires a certain number of steps.
+
+Linear-time reductions.
+Def. Problem X linear-time reduces to problem Y if X can be solved with:
+- Linear number of standard computational steps.
+- Constant number of calls to Y.
+
+
+Lower bound for convex hull.
+Proposition. In quadratic decision tree model, any algorithm for sorting
+N integers requires NlogN steps.
+
+
+
+
+
+
+
+
+Classifying Problems
+----------------------------------------------------------
+Linear algebra reductions.
+Matrix multiplication.
+
+
