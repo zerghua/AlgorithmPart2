@@ -1,0 +1,52 @@
+Brewer's Problem
+----------------------------------------------------------
+
+
+Linear programming
+Problem-solving model for optimal allocation of scarce resources,
+among a number of competing activities that encompasses:
+- shortest paths, maxflow, MST, matching, assignment
+- Ax = b, 2-person zero-sum games.
+
+
+Applications
+Compiler register allocation, data mining.
+...
+
+
+Brewer's problem
+choose product mix to maximize profits.
+
+
+
+
+
+Simplex Algorithm
+----------------------------------------------------------
+- Developed shortly after WWII in response to logistical problem,
+including Berlin airlift.
+- Ranked as one of top 10 scientific algorithm of 20th century.
+
+
+Generic algorithm
+- start at some extreme point
+- pivot from one extreme point to an adjacent one.
+- repeat until optimal
+
+How to implement? Linear algebra.
+
+
+
+
+
+
+Simplex Implementations
+----------------------------------------------------------
+2d-array
+use industry-strength implementation
+
+
+
+
+Linear Programming Reductions
+----------------------------------------------------------
