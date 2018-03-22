@@ -1,0 +1,63 @@
+Introduction to Intractability
+----------------------------------------------------------
+Def. A problem is intractable if it can't be solved in polynomial time.
+
+
+
+Search Problems
+----------------------------------------------------------
+Four fundamental problems
+LSOLVE: linear equations
+LP: linear inequalities
+ILP: linear inequalities, find boolean solution
+SAT: boolean equality
+
+Search problem.
+Given an instance I of a problem, find a solution.
+
+
+Requirement.
+Must be able to efficiently check that S is a solution.
+
+
+
+
+P vs. NP
+----------------------------------------------------------
+def. NP is the class of all search problems.
+def. P is the class of search problems solvable in poly-time.
+
+
+Nondeterministic machine can guess the desired solution.
+
+NP.
+search problems solvable in poly time on a nondeterministic TM.
+
+
+
+
+
+
+Classifying Problems
+----------------------------------------------------------
+satisfiability
+
+exhaustive search
+
+SAT reduces to ILP
+
+
+
+
+NP-Completeness
+----------------------------------------------------------
+Def.
+An NP problem is NP-complete if all problems in NP poly-time reduce to it.
+
+
+
+
+Coping with Intractability
+----------------------------------------------------------
+
+
